@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21" 
+      xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mycompany.airlineticketingsystem.LoginController">
+    
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+
+    <Label text="Airline System Login">
+        <font>
+            <Font size="24.0" />
+        </font>
+    </Label>
+    
+    <TextField fx:id="usernameField" promptText="Enter Username (IC No)" maxWidth="250"/>
+    <PasswordField fx:id="passwordField" promptText="Enter Password" maxWidth="250"/>
+    
+    <Label fx:id="statusLabel" textFill="RED" />
+
+    <Button fx:id="loginButton" text="Login" onAction="#handleLoginButton" />
+    
+</VBox>

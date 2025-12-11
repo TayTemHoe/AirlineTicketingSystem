@@ -10,4 +10,43 @@
         <maven.compiler.release>25</maven.compiler.release>
         <exec.mainClass>com.mycompany.airlineticketingsystem.AirlineTicketingSystem</exec.mainClass>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>25.0.1</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>25.0.1</version> 
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>25.0.1</version> 
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>25.0.1</version> 
+            <type>jar</type>
+        </dependency>
+        <!-- Add other JavaFX modules as required -->
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>com.mycompany.airlineticketingsystem.AirlineTicketingSystem</mainClass> 
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
