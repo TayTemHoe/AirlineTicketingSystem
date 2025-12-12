@@ -9,6 +9,8 @@ package com.mycompany.airlineticketingsystem;
  * @author Tay Tem Hoe
  */
 
+// Uncomment and import when setting up database connection:
+// import com.mycompany.airlineticketingsystem.config.DatabaseConnection;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -23,8 +25,15 @@ public class AirlineTicketingSystem extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        // Initialize database connection
+        // Get your JDBC URL from NetBeans: Services > Databases > Your Connection > Properties > JDBC URL
+        // Then uncomment and set it here:
+        // String jdbcUrl = "jdbc:postgresql://aws-1-ap-northeast-1.pooler.supabase.com:6543/postgres?user=postgres.ajdaciskaffuvaanizlw&password=YOUR_PASSWORD";
+        // DatabaseConnection.setConnectionUrl(jdbcUrl);
+        
         // Load the Login.fxml file we just created
-        scene = new Scene(loadFXML("Login"), 640, 480);
+        // Change "Login" to "FlightDashboard"
+        scene = new Scene(loadFXML("FlightDashboard"), 800, 600);
         stage.setScene(scene);
         stage.setTitle("Airline Modernisation Project");
         stage.show();
