@@ -1,0 +1,307 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 13 Dec 2025, 8:45:16 pm
+    Author     : Tay Tem Hoe
+*/
+/* =============================================================================
+   1. GLOBAL VARIABLES & ROOT
+   ============================================================================= */
+.root {
+    /* Define your Brand Colors here for easy changes */
+    -color-primary: #0078D7;       /* Airline Blue */
+    -color-primary-hover: #005a9e;
+    -color-secondary: #28a745;     /* Success Green (for booking) */
+    -color-danger: #dc3545;        /* Red (for errors/cancel) */
+    -color-bg: #f4f6f8;            /* Light Grey Background */
+    -color-card: #ffffff;          /* White Card Background */
+    -color-text: #333333;          /* Dark Grey Text */
+    -color-text-light: #6c757d;    /* Muted Text */
+    -border-color: #ced4da;        /* Light Border */
+
+    /* Global Font Settings */
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: -color-bg;
+}
+
+/* =============================================================================
+   2. TYPOGRAPHY (Labels & Text)
+   ============================================================================= */
+/* Main Page Titles (e.g. "Search Flights") */
+.page-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-primary;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);
+}
+
+/* Section Headers (e.g. "Passenger Details") */
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-text;
+    -fx-padding: 0 0 10 0; /* Space below */
+}
+
+/* Error Messages */
+.error-label {
+    -fx-text-fill: -color-danger;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* Success Messages */
+.success-label {
+    -fx-text-fill: -color-secondary;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* =============================================================================
+   3. INPUT FIELDS (TextField, PasswordField, ComboBox, DatePicker)
+   ============================================================================= */
+.text-field, .password-field, .combo-box, .date-picker {
+    -fx-background-color: -color-card;
+    -fx-border-color: -border-color;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 8;
+    -fx-prompt-text-fill: -color-text-light;
+}
+
+/* Highlight when user clicks inside */
+.text-field:focused, .password-field:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: -color-primary;
+    -fx-effect: dropshadow(gaussian, rgba(0,120,215,0.3), 5, 0, 0, 0);
+}
+
+/* =============================================================================
+   4. BUTTONS
+   ============================================================================= */
+/* Default Button (Grey - for "Cancel" or "Back") */
+.button {
+    -fx-background-color: #e2e6ea;
+    -fx-text-fill: -color-text;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);
+}
+
+.button:hover {
+    -fx-background-color: #dbe0e5;
+}
+
+/* Primary Action Button (Blue - for "Search", "Login", "Next") */
+.btn-primary {
+    -fx-background-color: -color-primary;
+    -fx-text-fill: white;
+}
+
+.btn-primary:hover {
+    -fx-background-color: -color-primary-hover;
+}
+
+/* Success Button (Green - for "Pay Now", "Confirm") */
+.btn-success {
+    -fx-background-color: -color-secondary;
+    -fx-text-fill: white;
+}
+
+.btn-success:hover {
+    -fx-background-color: #218838;
+}
+
+/* Danger Button (Red - for "Delete", "Logout") */
+.btn-danger {
+    -fx-background-color: -color-danger;
+    -fx-text-fill: white;
+}
+
+.btn-danger:hover {
+    -fx-background-color: #c82333;
+}
+
+/* =============================================================================
+   5. CONTAINERS & CARDS
+   ============================================================================= */
+/* White card look for login forms or flight lists */
+.card {
+    -fx-background-color: -color-card;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-padding: 20;
+}
+
+/* Top Navigation Bar */
+.nav-bar {
+    -fx-background-color: white;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* =============================================================================
+   6. TABLE VIEW (Flight Results)
+   ============================================================================= */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: -color-primary;
+    -fx-background-radius: 5 5 0 0;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell {
+    -fx-background-color: -color-card;
+    -fx-border-color: transparent transparent #eee transparent;
+    -fx-padding: 5;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #f9f9f9;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #e3f2fd; /* Light Blue selection */
+    -fx-text-fill: -color-text;
+}
+
+/* =============================================================================
+   7. SPECIFIC: SEAT SELECTION
+   ============================================================================= */
+/* The base style for a Seat Button */
+.seat-button {
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-radius: 4;
+    -fx-font-size: 10px;
+    -fx-border-color: #bdc3c7;
+}
+
+.seat-available {
+    -fx-background-color: #ffffff; /* White */
+    -fx-text-fill: -color-text;
+    -fx-cursor: hand;
+}
+.seat-available:hover {
+    -fx-background-color: #ecf0f1;
+}
+
+.seat-booked {
+    -fx-background-color: #e74c3c; /* Red */
+    -fx-text-fill: white;
+    -fx-opacity: 0.6;
+}
+
+.seat-selected {
+    -fx-background-color: #2ecc71; /* Green */
+    -fx-text-fill: white;
+    -fx-border-color: #27ae60;
+    -fx-effect: dropshadow(gaussian, rgba(46, 204, 113, 0.4), 10, 0, 0, 0);
+}
+
+/* =============================================================================
+   8. NAVIGATION BAR (Specific to CustomerMainLayout)
+   ============================================================================= */
+
+/* The Main Bar Container */
+.nav-bar {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 0, 0, 5, 0); /* Subtle shadow at bottom */
+    -fx-border-color: transparent transparent #e0e0e0 transparent; /* Light grey line at bottom */
+}
+
+/* Brand Logo Text */
+.brand-logo {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-primary; /* Uses the Blue var from before */
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Navigation Buttons (The Menu) */
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -color-text;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 20; /* Rounded pill shape */
+    -fx-padding: 8 20;
+    -fx-border-color: transparent;
+}
+
+.nav-button:hover {
+    -fx-background-color: #f0f4f8; /* Very light blue on hover */
+    -fx-text-fill: -color-primary;
+}
+
+/* The Active Tab (Shows which page you are on) */
+.nav-button-active {
+    -fx-background-color: #e3f2fd; /* Light Blue background */
+    -fx-text-fill: -color-primary;
+    -fx-border-color: -color-primary;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+}
+
+/* Welcome Text */
+.welcome-text {
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-text-fill: -color-text;
+}
+
+/* =============================================================================
+   9. FLIGHT SEARCH CARDS
+   ============================================================================= */
+
+/* The Container for a single flight */
+.flight-card {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 8;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);
+    -fx-cursor: hand; /* Make it look clickable */
+    -fx-transition: all 0.3s;
+}
+
+/* Hover Effect: Card lifts up slightly */
+.flight-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,120,215,0.2), 10, 0, 0, 4);
+    -fx-border-color: -color-primary;
+}
+
+/* Route Text (Malaysia -> Japan) */
+.flight-route-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -color-text;
+    -fx-font-weight: bold;
+}
+
+.price-economy {
+    -fx-font-size: 14px;
+    -fx-text-fill: #28a745; /* Green */
+    -fx-font-weight: bold;
+}
+
+.price-business {
+    -fx-font-size: 14px;
+    -fx-text-fill: #b58900; /* Gold/Dark Yellow for Premium feel */
+    -fx-font-weight: bold;
+}
+

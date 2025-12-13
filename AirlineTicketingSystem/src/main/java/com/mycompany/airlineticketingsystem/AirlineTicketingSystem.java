@@ -12,35 +12,51 @@ package com.mycompany.airlineticketingsystem;
 // Uncomment and import when setting up database connection:
 // import com.mycompany.airlineticketingsystem.config.DatabaseConnection;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.geometry.Rectangle2D;
+
+import java.io.IOException;
 
 public class AirlineTicketingSystem extends Application {
 
     private static Scene scene;
+    private static Stage primaryStage; // Keep a reference to the stage
 
     @Override
     public void start(Stage stage) throws IOException {
-        // Initialize database connection
-        // Get your JDBC URL from NetBeans: Services > Databases > Your Connection > Properties > JDBC URL
-        // Then uncomment and set it here:
-        // String jdbcUrl = "jdbc:postgresql://aws-1-ap-northeast-1.pooler.supabase.com:6543/postgres?user=postgres.ajdaciskaffuvaanizlw&password=YOUR_PASSWORD";
-        // DatabaseConnection.setConnectionUrl(jdbcUrl);
+        primaryStage = stage;
+
+        // 1. Load your initial view (Change "FlightDashboard" to "Login" later when ready)
+        Parent root = loadFXML("CustomerMainLayout");
         
-        // Load the Login.fxml file we just created
-        // Change "Login" to "FlightDashboard"
-        scene = new Scene(loadFXML("FlightDashboard"), 800, 600);
+        // 2. Get the screen size of the computer running the app
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+
+        // 3. Create the scene with the screen's dimensions
+        scene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
+
         stage.setScene(scene);
-        stage.setTitle("Airline Modernisation Project");
+        stage.setTitle("Airline Ticketing System");
+
+        // --- AUTO-SIZE CONFIGURATION ---
+        
+        // OPTION A: Maximized Window (Recommended for this Assignment)
+        // This fills the available space but keeps the taskbar/title bar visible.
+        stage.setMaximized(true);
+
+        // OPTION B: True Full Screen (Like a Game)
+        // Uncomment the line below if you want to hide the taskbar completely.
+        // stage.setFullScreen(true);
+
         stage.show();
     }
 
-    // Helper method to switch scenes (You will use this a lot!)
-    static void setRoot(String fxml) throws IOException {
+    // Helper method to switch views (e.g., from Login -> Dashboard)
+    public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
