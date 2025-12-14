@@ -26,11 +26,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.math.BigDecimal;
 
 public class SeatSelectionController {
 
@@ -45,128 +41,109 @@ public class SeatSelectionController {
 
     private final FlightService flightService;
     private Flight currentFlight;
-    
-    // CHANGED: Use a Set to track multiple seats (prevents duplicates)
-    private Set<Seat> selectedSeats = new HashSet<>(); 
+    private Seat selectedSeat = null; // Tracks current choice
 
     public SeatSelectionController() {
         this.flightService = new FlightServiceImpl();
     }
 
+    /**
+     * CRITICAL: This method is called by the previous screen (FlightSearch)
+     * to pass the data BEFORE showing this screen.
+     */
     public void setFlight(Flight flight) {
         this.currentFlight = flight;
         this.lblFlightInfo.setText("Select Seats for " + flight.getFlightId() + 
                                    " (" + flight.getDepartCountry() + " -> " + flight.getArriveCountry() + ")");
+        
         loadSeats();
     }
 
     private void loadSeats() {
         seatGrid.getChildren().clear();
-        selectedSeats.clear(); // Reset on reload
-        updateSummary();       // Reset labels
-
+        
         List<Seat> seats = flightService.getSeatsForFlight(currentFlight.getFlightId());
 
         for (Seat seat : seats) {
+            // 1. Create a Button for the Seat
             Button btn = new Button(seat.getSeatNumber());
             btn.getStyleClass().add("seat-btn");
             btn.setPrefSize(50, 50);
 
+            // 2. Style based on Status & Type
             if (seat.getStatus() == SeatStatus.BOOKED) {
                 btn.getStyleClass().add("seat-booked");
-                btn.setDisable(true);
+                btn.setDisable(true); // Can't click booked seats
             } else if (seat.getType() == SeatType.BUSINESS) {
                 btn.getStyleClass().add("seat-business");
             } else {
                 btn.getStyleClass().add("seat-economy");
             }
 
+            // 3. Handle Click Event
             btn.setOnAction(e -> handleSeatClick(btn, seat));
 
-            // Grid Position Logic
+            // 4. Calculate Grid Position (Logic: "1A" -> Row 1, Col 0)
+            // Parse "1A" -> Row: 1, Col: 'A'
             String seatNum = seat.getSeatNumber(); 
             String rowStr = seatNum.substring(0, seatNum.length() - 1);
-            char colChar = seatNum.charAt(seatNum.length() - 1);
+            char colChar = seatNum.charAt(seatNum.length() - 1); // 'A', 'B', 'C', 'D'
+
             int row = Integer.parseInt(rowStr);
-            int col = colChar - 'A';
-            if (col >= 2) col++; // Aisle gap
+            int col = colChar - 'A'; // 'A'->0, 'B'->1...
+
+            // Add visuals for the "Aisle" (Gap between B and C)
+            if (col >= 2) col++; // Shift C and D to index 3 and 4
 
             seatGrid.add(btn, col, row);
         }
     }
 
     private void handleSeatClick(Button clickedBtn, Seat seat) {
-        // TOGGLE LOGIC:
-        if (selectedSeats.contains(seat)) {
-            // Deselect
-            selectedSeats.remove(seat);
-            clickedBtn.getStyleClass().remove("seat-selected");
+        // 1. Reset previous selection Visuals
+        seatGrid.getChildren().forEach(node -> {
+            node.getStyleClass().remove("seat-selected");
+        });
+
+        // 2. Set new selection
+        clickedBtn.getStyleClass().add("seat-selected");
+        this.selectedSeat = seat;
+
+        // 3. Update Summary Panel
+        lblSelectedSeat.setText(seat.getSeatNumber());
+        lblSeatType.setText(seat.getType().toString());
+        
+        // Show correct price
+        if (seat.getType() == SeatType.BUSINESS) {
+            lblPrice.setText("RM " + currentFlight.getPriceBusiness());
         } else {
-            // Select
-            selectedSeats.add(seat);
-            clickedBtn.getStyleClass().add("seat-selected");
+            lblPrice.setText("RM " + currentFlight.getPriceEconomy());
         }
 
-        updateSummary();
-    }
-
-    private void updateSummary() {
-        if (selectedSeats.isEmpty()) {
-            lblSelectedSeat.setText("None");
-            lblSeatType.setText("-");
-            lblPrice.setText("RM 0.00");
-            btnConfirm.setDisable(true);
-            return;
-        }
-
-        // 1. Show Seat Numbers (e.g., "1A, 1B")
-        String seatLabels = selectedSeats.stream()
-                .map(Seat::getSeatNumber)
-                .sorted()
-                .collect(Collectors.joining(", "));
-        
-        // Truncate if too long to prevent UI breaking
-        if (seatLabels.length() > 20) {
-            seatLabels = selectedSeats.size() + " seats selected";
-        }
-        lblSelectedSeat.setText(seatLabels);
-
-        // 2. Show Types (Mixed or specific)
-        boolean hasBusiness = selectedSeats.stream().anyMatch(s -> s.getType() == SeatType.BUSINESS);
-        boolean hasEconomy = selectedSeats.stream().anyMatch(s -> s.getType() == SeatType.ECONOMY);
-        
-        if (hasBusiness && hasEconomy) lblSeatType.setText("Mixed Class");
-        else if (hasBusiness) lblSeatType.setText("Business");
-        else lblSeatType.setText("Economy");
-
-        // 3. Calculate Total Price
-        BigDecimal total = BigDecimal.ZERO;
-        for (Seat s : selectedSeats) {
-            if (s.getType() == SeatType.BUSINESS) {
-                total = total.add(currentFlight.getPriceBusiness());
-            } else {
-                total = total.add(currentFlight.getPriceEconomy());
-            }
-        }
-        lblPrice.setText("RM " + total.toString());
+        // Enable Confirm Button
         btnConfirm.setDisable(false);
     }
 
     @FXML
     private void handleConfirm() {
-        if (!selectedSeats.isEmpty()) {
-            System.out.println("Proceeding with seats: " + selectedSeats);
-            // TODO: Pass the List<Seat> to the next screen (Passenger Details)
-            // loadPassengerDetails(new ArrayList<>(selectedSeats), currentFlight);
+        if (selectedSeat != null) {
+            System.out.println("Confirmed Seat: " + selectedSeat.getSeatNumber());
+            // TODO: Move to PassengerDetails Screen
+            // loadPassengerDetails(selectedSeat, currentFlight);
         }
     }
 
     @FXML
     private void handleBack() {
+        // Simple way to go back: Re-load FlightSearch
         try {
+             // Assuming we are inside the MainLayout StackPane
             Parent searchView = FXMLLoader.load(getClass().getResource("/com/mycompany/airlineticketingsystem/FlightSearch.fxml"));
+            
+            // Get the parent BorderPane (CustomerMainLayout)
             BorderPane mainLayout = (BorderPane) lblFlightInfo.getScene().getRoot();
             StackPane contentArea = (StackPane) mainLayout.getCenter();
+            
             contentArea.getChildren().clear();
             contentArea.getChildren().add(searchView);
         } catch (IOException e) {

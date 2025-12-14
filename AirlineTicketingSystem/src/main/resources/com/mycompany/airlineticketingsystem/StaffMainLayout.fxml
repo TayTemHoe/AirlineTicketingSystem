@@ -21,7 +21,6 @@
             <Label text="Admin Portal" styleClass="sidebar-title" />
             
             <VBox spacing="5">
-                <Button fx:id="btnDashboard" text="📊 Dashboard" styleClass="nav-button" maxWidth="Infinity" onAction="#showDashboard"/>
                 <Button fx:id="btnFlights" text="✈ Flight Management" styleClass="nav-button" maxWidth="Infinity" onAction="#showFlightManagement"/>
                 <Button fx:id="btnReports" text="📈 Reports &amp; Analytics" styleClass="nav-button" maxWidth="Infinity" onAction="#showReports"/>
                 <Button fx:id="btnStaff" text="👥 Staff Management" styleClass="nav-button" maxWidth="Infinity" onAction="#showStaffManagement"/>

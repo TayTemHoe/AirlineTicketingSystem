@@ -1,6 +1,7 @@
 package com.mycompany.airlineticketingsystem.repository;
 
 import com.mycompany.airlineticketingsystem.model.Flight;
+import com.mycompany.airlineticketingsystem.model.Plane;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -21,5 +22,7 @@ public interface FlightRepository {
     
     // Delete a flight
     void delete(String flightId);
+    
+    List<Plane> findAllPlane();
 }
 

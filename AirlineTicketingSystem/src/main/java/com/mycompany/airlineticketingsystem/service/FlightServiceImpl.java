@@ -81,5 +81,9 @@ public class FlightServiceImpl implements FlightService {
         }
         return generatedSeats;
     }
+    
+    public List<Plane> getAllPlanes() {
+        return flightRepository.findAllPlane();
+    }
 }
 

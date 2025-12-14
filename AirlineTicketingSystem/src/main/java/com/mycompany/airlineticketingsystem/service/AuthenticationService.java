@@ -4,6 +4,7 @@ import com.mycompany.airlineticketingsystem.model.Customer;
 import com.mycompany.airlineticketingsystem.model.Staff;
 import com.mycompany.airlineticketingsystem.repository.UserRepositoryImpl;
 import com.mycompany.airlineticketingsystem.session.UserSession;
+import java.util.List;
 import java.util.Optional;
 
 public class AuthenticationService {
@@ -71,5 +72,9 @@ public class AuthenticationService {
 
     public boolean updateStaffProfile(Staff staff) {
         return userRepo.updateStaff(staff);
+    }
+    
+    public List<Staff> getAllStaff() {
+        return userRepo.findAllStaff();
     }
 }

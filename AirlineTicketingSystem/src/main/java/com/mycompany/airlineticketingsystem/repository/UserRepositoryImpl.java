@@ -6,6 +6,8 @@ import com.mycompany.airlineticketingsystem.enums.Gender;
 import com.mycompany.airlineticketingsystem.model.Customer;
 import com.mycompany.airlineticketingsystem.model.Staff;
 import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -164,5 +166,36 @@ public class UserRepositoryImpl implements UserRepository{
             e.printStackTrace();
             return false;
         }
+    }
+    
+    // ✅ NEW: Implementation of findAllStaff
+    @Override
+    public List<Staff> findAllStaff() {
+        List<Staff> staffList = new ArrayList<>();
+        String sql = "SELECT * FROM staff ORDER BY staff_id";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                // Convert DB String to Enum safely
+                Gender gender = Gender.fromString(rs.getString("gender"));
+
+                Staff s = new Staff(
+                    rs.getString("staff_id"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("phone_number"),
+                    gender,
+                    rs.getString("position"),
+                    rs.getString("password")
+                );
+                staffList.add(s);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return staffList;
     }
 }

@@ -188,4 +188,5 @@ public class FlightSearchController {
             System.err.println("Error loading SeatSelection screen: " + e.getMessage());
         }
     }
+    
 }

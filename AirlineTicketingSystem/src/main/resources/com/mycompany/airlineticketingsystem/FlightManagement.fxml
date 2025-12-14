@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
@@ -35,22 +36,15 @@
                 <Label text="Arrive Date"/><DatePicker fx:id="dateArrive" maxWidth="Infinity"/>
             </VBox>
             <VBox GridPane.columnIndex="2" GridPane.rowIndex="1">
-                <Label text="Depart Time"/><TextField fx:id="txtDepartTime" promptText="14:30"/>
+                <Label text="Depart Time (HH:mm)"/><TextField fx:id="txtDepartTime" promptText="14:30"/>
             </VBox>
             <VBox GridPane.columnIndex="3" GridPane.rowIndex="1">
-                <Label text="Arrive Time"/><TextField fx:id="txtArriveTime" promptText="22:00"/>
+                <Label text="Arrive Time (HH:mm)"/><TextField fx:id="txtArriveTime" promptText="22:00"/>
             </VBox>
 
             <VBox GridPane.columnIndex="0" GridPane.rowIndex="2">
-                <Label text="Plane ID"/><TextField fx:id="txtPlaneId" promptText="e.g. PL009"/>
+                <Label text="Select Plane"/><ComboBox fx:id="comboPlane" maxWidth="Infinity" promptText="Select a Plane"/>
             </VBox>
-             <VBox GridPane.columnIndex="1" GridPane.rowIndex="2">
-                <Label text="Model Name"/><TextField fx:id="txtModel" promptText="e.g. Boeing 777"/>
-            </VBox>
-            <VBox GridPane.columnIndex="2" GridPane.rowIndex="2">
-                <Label text="Capacity"/><TextField fx:id="txtCapacity" promptText="e.g. 60"/>
-            </VBox>
-
             <VBox GridPane.columnIndex="0" GridPane.rowIndex="3">
                 <Label text="Eco Price"/><TextField fx:id="txtEcoPrice"/>
             </VBox>
@@ -70,6 +64,7 @@
         <HBox alignment="CENTER_LEFT" spacing="10">
             <Label text="Flight Schedule" styleClass="section-header"/>
             <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="lblStatus" text="Ready" style="-fx-text-fill: grey; -fx-font-size: 11px;"/>
             <Button text="↻ Refresh" onAction="#handleRefresh"/>
         </HBox>
 
@@ -78,10 +73,8 @@
                 <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
                 <TableColumn fx:id="colRoute" text="Route" prefWidth="150"/>
                 <TableColumn fx:id="colDate" text="Departure" prefWidth="130"/>
+                <TableColumn fx:id="colPlane" text="Plane ID" prefWidth="70"/>
                 <TableColumn fx:id="colPrice" text="Prices" prefWidth="120"/>
-                
-                <TableColumn fx:id="colModel" text="Model" prefWidth="100"/>
-                <TableColumn fx:id="colCapacity" text="Cap." prefWidth="50"/>
                 <TableColumn fx:id="colAvailable" text="Avail." prefWidth="50" style="-fx-text-fill: green; -fx-alignment: center;"/>
                 <TableColumn fx:id="colBooked" text="Booked" prefWidth="50" style="-fx-text-fill: red; -fx-alignment: center;"/>
                 <TableColumn fx:id="colAction" text="Actions" prefWidth="90"/>

@@ -6,6 +6,7 @@ package com.mycompany.airlineticketingsystem.repository;
 
 import com.mycompany.airlineticketingsystem.model.Customer;
 import com.mycompany.airlineticketingsystem.model.Staff;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,4 +18,6 @@ public interface UserRepository {
     Optional<Customer> findCustomerByIc(String icNo);
     boolean updateCustomer(Customer customer);
     boolean updateStaff(Staff staff);
+    // Fetch all staff members
+    List<Staff> findAllStaff();
 }

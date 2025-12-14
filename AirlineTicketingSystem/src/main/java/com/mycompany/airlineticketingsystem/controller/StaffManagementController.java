@@ -21,6 +21,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 public class StaffManagementController {
@@ -61,14 +62,18 @@ public class StaffManagementController {
     @FXML
     private void handleRefresh() {
         staffList.clear();
-        // NOTE: You need to add 'getAllStaff()' to AuthenticationService or UserRepository
-        // For now, I will use a placeholder or assume the method exists
-        // staffList.addAll(authService.getAllStaff()); 
         
-        // Mock data for display testing if DB method isn't ready
-        // staffList.add(new Staff("S001", "Boss", "boss@air.com", "0123", Gender.MALE, "Manager", "pass"));
+        // 1. Fetch real data from Service
+        List<Staff> dbData = authService.getAllStaff();
         
+        // 2. Add to ObservableList (which updates the TableView)
+        staffList.addAll(dbData);
+        
+        // 3. Bind to Table
         staffTable.setItems(staffList);
+        
+        // Optional: Show count
+        System.out.println("Loaded " + staffList.size() + " staff records.");
     }
 
     @FXML

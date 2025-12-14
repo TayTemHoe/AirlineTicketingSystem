@@ -8,6 +8,7 @@ package com.mycompany.airlineticketingsystem.controller;
  *
  * @author Tay Tem Hoe
  */
+import com.mycompany.airlineticketingsystem.AirlineTicketingSystem;
 import com.mycompany.airlineticketingsystem.model.Customer;
 import com.mycompany.airlineticketingsystem.session.UserSession;
 import javafx.fxml.FXML;
@@ -61,9 +62,9 @@ public class CustomerMainController {
     }
 
     @FXML
-    private void handleLogout() {
-        System.out.println("Logging out...");
-        // Logic to return to Login.fxml goes here
+    private void handleLogout() throws IOException {
+        UserSession.getInstance().cleanUserSession();
+        AirlineTicketingSystem.setRoot("CustomerLogin");
     }
 
     // --- Helper Methods ---

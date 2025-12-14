@@ -26,7 +26,6 @@ public class StaffMainController {
     @FXML private Label lblPageTitle;
     @FXML private Label lblUserInfo;
 
-    @FXML private Button btnDashboard;
     @FXML private Button btnFlights;
     @FXML private Button btnReports;
     @FXML private Button btnStaff;
@@ -47,13 +46,7 @@ public class StaffMainController {
         }
 
         // 3. Load Default View
-        showDashboard();
-    }
-
-    // --- NAVIGATION ---
-    @FXML private void showDashboard() {
-        loadView("FlightDashboard", "Flight Inventory Dashboard");
-        setActive(btnDashboard);
+        showFlightManagement();
     }
 
     @FXML private void showFlightManagement() {
@@ -100,7 +93,6 @@ public class StaffMainController {
 
     private void setActive(Button btn) {
         // Reset Styles
-        btnDashboard.getStyleClass().remove("nav-button-active");
         btnFlights.getStyleClass().remove("nav-button-active");
         btnReports.getStyleClass().remove("nav-button-active");
         btnStaff.getStyleClass().remove("nav-button-active");

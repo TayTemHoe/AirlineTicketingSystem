@@ -2,6 +2,7 @@ package com.mycompany.airlineticketingsystem.repository;
 
 import com.mycompany.airlineticketingsystem.model.Flight;
 import com.mycompany.airlineticketingsystem.config.DatabaseConnection;
+import com.mycompany.airlineticketingsystem.model.Plane;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -135,5 +136,27 @@ public class FlightRepositoryImpl implements FlightRepository {
                         rs.getBigDecimal("price_business").doubleValue())
                 .plane(rs.getString("plane_id"))
                 .build();
+    }
+    
+        @Override
+    public List<Plane> findAllPlane() {
+        List<Plane> planes = new ArrayList<>();
+        String sql = "SELECT * FROM plane";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                planes.add(new Plane(
+                    rs.getString("plane_id"),
+                    rs.getString("model"),
+                    rs.getInt("capacity")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return planes;
     }
 }
