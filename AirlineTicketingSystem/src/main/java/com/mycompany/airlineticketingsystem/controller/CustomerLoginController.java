@@ -1,12 +1,16 @@
 package com.mycompany.airlineticketingsystem.controller;
 
 import com.mycompany.airlineticketingsystem.AirlineTicketingSystem;
+import com.mycompany.airlineticketingsystem.model.Customer;
 import com.mycompany.airlineticketingsystem.service.AuthenticationService;
+import com.mycompany.airlineticketingsystem.session.UserSession;
 import java.io.IOException;
+import java.util.Optional;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import util.ValidationUtils;
 
 public class CustomerLoginController {
 
@@ -16,16 +20,30 @@ public class CustomerLoginController {
     
     private AuthenticationService authService = new AuthenticationService();
 
-    @FXML
+@FXML
     private void handleLogin() throws IOException {
-        String ic = icField.getText();
+        String ic = icField.getText().trim();
         String pass = passwordField.getText();
 
-        if (authService.loginCustomer(ic, pass)) {
+        // 1. Validation
+        if (!ValidationUtils.isValidIC(ic)) {
+            statusLabel.setText("Invalid IC Format! Use 000000-00-0000");
+            statusLabel.setStyle("-fx-text-fill: red;");
+            return;
+        }
+
+        // 2. Attempt Login (Get Optional<Customer>)
+        Optional<Customer> customer = authService.loginCustomer(ic, pass);
+
+        if (customer.isPresent()) {
+            // ✅ SUCCESS: Set the Session
+            UserSession.getInstance().setCustomer(customer.get());
+            System.out.println("Login Successful: " + customer.get().getName());
+
             statusLabel.setStyle("-fx-text-fill: green;");
             statusLabel.setText("Login Success!");
-            // 2. REDIRECT to the Main Customer Layout (Top Bar + Content Area)
-            // This loads CustomerMainLayout.fxml, which defaults to showing FlightSearch
+            
+            // Redirect to Main Layout
             AirlineTicketingSystem.setRoot("CustomerMainLayout");
         } else {
             statusLabel.setStyle("-fx-text-fill: red;");
@@ -36,5 +54,10 @@ public class CustomerLoginController {
     @FXML
     private void handleBack() throws IOException {
         AirlineTicketingSystem.setRoot("Home");
+    }
+    
+    @FXML
+    private void goToRegister() throws IOException {
+        AirlineTicketingSystem.setRoot("CustomerRegister");
     }
 }

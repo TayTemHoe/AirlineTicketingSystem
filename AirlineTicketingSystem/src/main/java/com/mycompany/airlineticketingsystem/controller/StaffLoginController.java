@@ -1,12 +1,16 @@
 package com.mycompany.airlineticketingsystem.controller;
 
 import com.mycompany.airlineticketingsystem.AirlineTicketingSystem;
+import com.mycompany.airlineticketingsystem.model.Staff;
 import com.mycompany.airlineticketingsystem.service.AuthenticationService;
+import com.mycompany.airlineticketingsystem.session.UserSession;
 import java.io.IOException;
+import java.util.Optional;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import util.ValidationUtils;
 
 public class StaffLoginController {
 
@@ -21,11 +25,25 @@ public class StaffLoginController {
         String id = staffIdField.getText();
         String pass = passwordField.getText();
 
-        if (authService.loginStaff(id, pass)) {
-            // Success: Go to Dashboard
-            AirlineTicketingSystem.setRoot("FlightDashboard");
+        // 1. Validation
+        if (!ValidationUtils.isValidStaffId(id)) {
+            statusLabel.setText("Invalid ID Format! Use example, S001");
+            return;
+        }
+        
+        // 2. Attempt Login (Get Optional<Staff>)
+        Optional<Staff> staff = authService.loginStaff(id, pass);
+
+        if (staff.isPresent()) {
+            // ✅ SUCCESS: Set the Session
+            UserSession.getInstance().setStaff(staff.get());
+            System.out.println("Login Successful: " + staff.get().getName());
+
+            // Redirect
+            AirlineTicketingSystem.setRoot("FlightDashboard"); 
         } else {
             statusLabel.setText("Invalid Staff ID or Password");
+            statusLabel.setStyle("-fx-text-fill: red;");
         }
     }
 

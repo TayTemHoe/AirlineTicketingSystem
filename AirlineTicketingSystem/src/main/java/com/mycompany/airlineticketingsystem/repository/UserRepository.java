@@ -13,8 +13,6 @@ import java.util.Optional;
  * @author Tay Tem Hoe
  */
 public interface UserRepository {
-    
     Optional<Staff> findStaffById(String staffId);
-    
     Optional<Customer> findCustomerByIc(String icNo);
 }

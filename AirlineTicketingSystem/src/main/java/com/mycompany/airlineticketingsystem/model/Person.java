@@ -1,12 +1,14 @@
 package com.mycompany.airlineticketingsystem.model;
 
+import com.mycompany.airlineticketingsystem.enums.Gender;
+
 public abstract class Person {
     protected String name;
     protected String email;
     protected String phoneNumber;
-    protected String gender;
+    protected Gender gender; // Changed from String to Enum
 
-    public Person(String name, String email, String phoneNumber, String gender) {
+    public Person(String name, String email, String phoneNumber, Gender gender) {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber; 
@@ -16,5 +18,5 @@ public abstract class Person {
     public String getName() { return name; }
     public String getEmail() { return email; }
     public String getPhoneNumber() { return phoneNumber; }
-    public String getGender() { return gender; }
+    public Gender getGender() { return gender; }
 }
