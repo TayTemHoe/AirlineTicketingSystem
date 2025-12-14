@@ -29,6 +29,10 @@ import javafx.scene.layout.Region;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 
 public class FlightSearchController {
 
@@ -156,8 +160,33 @@ public class FlightSearchController {
         }
     }
 
+    // ... inside FlightSearchController class ...
+
     private void handleBookClick(Flight f) {
-        System.out.println("Booking Flight: " + f.getFlightId());
-        // Logic to switch to Seat Selection screen comes next
+        try {
+            // 1. Load the FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/airlineticketingsystem/SeatSelection.fxml"));
+            Parent seatView = loader.load();
+
+            // 2. Get the Controller and PASS DATA
+            SeatSelectionController controller = loader.getController();
+            controller.setFlight(f); // <--- THIS IS KEY
+
+            // 3. Switch the View (Find the Main Layout's content area)
+            // Tip: We assume the FlightSearch view is inside the StackPane of CustomerMainLayout
+            // We can get the Scene, find the root, and swap center.
+            
+            if (flightListContainer.getScene() != null) {
+                BorderPane mainLayout = (BorderPane) flightListContainer.getScene().getRoot();
+                StackPane contentArea = (StackPane) mainLayout.getCenter();
+                
+                contentArea.getChildren().clear();
+                contentArea.getChildren().add(seatView);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error loading SeatSelection screen: " + e.getMessage());
+        }
     }
 }

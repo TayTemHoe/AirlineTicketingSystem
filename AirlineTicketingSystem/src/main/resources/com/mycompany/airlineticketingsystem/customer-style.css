@@ -305,3 +305,63 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-font-weight: bold;
 }
 
+/* =============================================================================
+   10. SEAT MAP STYLES
+   ============================================================================= */
+
+/* The Grid Container */
+.seat-grid {
+    -fx-padding: 20;
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 10;
+    -fx-hgap: 10; /* Gap between columns */
+    -fx-vgap: 10; /* Gap between rows */
+}
+
+/* Base Seat Button */
+.seat-btn {
+    -fx-min-width: 45px;
+    -fx-min-height: 45px;
+    -fx-background-radius: 8;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-border-color: #bdc3c7;
+}
+
+/* 1. Economy Seat (White) */
+.seat-economy {
+    -fx-background-color: white;
+    -fx-text-fill: -color-text;
+}
+.seat-economy:hover {
+    -fx-background-color: #e9ecef; /* Light Grey */
+}
+
+/* 2. Business Seat (Gold/Yellow) */
+.seat-business {
+    -fx-background-color: #fff3cd; /* Light Yellow */
+    -fx-border-color: #ffeeba;
+    -fx-text-fill: #856404;
+}
+.seat-business:hover {
+    -fx-background-color: #ffe8a1;
+}
+
+/* 3. Booked Seat (Red & Disabled) */
+.seat-booked {
+    -fx-background-color: #e2e6ea;
+    -fx-text-fill: #adb5bd; /* Greyed out text */
+    -fx-border-color: transparent;
+    -fx-cursor: default; /* No hand cursor */
+    -fx-opacity: 0.7;
+}
+
+/* 4. Selected Seat (Green) */
+.seat-selected {
+    -fx-background-color: -color-secondary; /* Green */
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(40, 167, 69, 0.4), 10, 0, 0, 0);
+    -fx-border-color: transparent;
+}

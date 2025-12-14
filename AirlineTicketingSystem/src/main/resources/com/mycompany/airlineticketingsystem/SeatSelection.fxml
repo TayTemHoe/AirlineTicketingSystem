@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.mycompany.airlineticketingsystem.controller.SeatSelectionController"
+            stylesheets="@customer-style.css">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10 20;">
+            <Button text="← Back" onAction="#handleBack" styleClass="button"/>
+            <Label fx:id="lblFlightInfo" text="Select Seats for Flight MH370" styleClass="page-title" style="-fx-font-size: 20px;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+            <content>
+                <VBox alignment="TOP_CENTER" spacing="20">
+                    <padding><Insets top="20" bottom="20"/></padding>
+                    
+                    <Label text="⬆ FRONT OF PLANE ⬆" style="-fx-text-fill: #999; -fx-font-weight: bold;"/>
+                    
+                    <GridPane fx:id="seatGrid" alignment="CENTER" styleClass="seat-grid">
+                        </GridPane>
+                    
+                    <HBox alignment="CENTER" spacing="15">
+                        <Label text="⬜ Economy" />
+                        <Label text="🟨 Business" />
+                        <Label text="⬛ Booked" style="-fx-text-fill: #999;"/>
+                        <Label text="🟩 Selected" style="-fx-text-fill: green; -fx-font-weight:bold;"/>
+                    </HBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <right>
+        <VBox spacing="15" styleClass="card" prefWidth="300" style="-fx-background-color: white;">
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+            <Label text="Your Selection" styleClass="section-title"/>
+            
+            <HBox spacing="10">
+                <Label text="Seat:" style="-fx-font-weight: bold;"/>
+                <Label fx:id="lblSelectedSeat" text="None" />
+            </HBox>
+            
+            <HBox spacing="10">
+                <Label text="Class:" style="-fx-font-weight: bold;"/>
+                <Label fx:id="lblSeatType" text="-" />
+            </HBox>
+
+            <Separator />
+            
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Total Price:" style="-fx-font-size: 16px;"/>
+                <Label fx:id="lblPrice" text="RM 0.00" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0078D7;"/>
+            </HBox>
+
+            <Separator />
+
+            <Button fx:id="btnConfirm" text="Confirm &amp; Continue" 
+                    styleClass="button, btn-success" maxWidth="Infinity" 
+                    disable="true" onAction="#handleConfirm"/>
+        </VBox>
+    </right>
+
+</BorderPane>

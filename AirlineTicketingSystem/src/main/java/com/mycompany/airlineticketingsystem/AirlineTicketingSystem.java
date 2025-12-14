@@ -31,7 +31,7 @@ public class AirlineTicketingSystem extends Application {
         primaryStage = stage;
 
         // 1. Load your initial view (Change "FlightDashboard" to "Login" later when ready)
-        Parent root = loadFXML("CustomerMainLayout");
+        Parent root = loadFXML("Home");
         
         // 2. Get the screen size of the computer running the app
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
