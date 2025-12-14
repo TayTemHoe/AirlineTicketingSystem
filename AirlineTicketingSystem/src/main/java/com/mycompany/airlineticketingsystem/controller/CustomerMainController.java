@@ -8,6 +8,8 @@ package com.mycompany.airlineticketingsystem.controller;
  *
  * @author Tay Tem Hoe
  */
+import com.mycompany.airlineticketingsystem.model.Customer;
+import com.mycompany.airlineticketingsystem.session.UserSession;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,11 +30,11 @@ public class CustomerMainController {
     @FXML private Button btnProfile;
 
     // Simulate logged-in user (Replace with actual User Session later)
-    private String currentUserName = "Ali bin Abu"; 
+    private Customer currentUserName = UserSession.getInstance().getLoggedInCustomer(); 
 
     @FXML
     public void initialize() {
-        lblWelcome.setText("Welcome, " + currentUserName);
+        lblWelcome.setText("Welcome, " + currentUserName.getName());
         
         // Load the default page (Flight Search) immediately
         showFlightSearch();
