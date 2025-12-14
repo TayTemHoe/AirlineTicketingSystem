@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+
+<VBox spacing="20.0" alignment="TOP_CENTER"
+      xmlns="http://javafx.com/javafx/21" 
+      xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mycompany.airlineticketingsystem.controller.ProfileController"
+      stylesheets="@customer-style.css">
+
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+    </padding>
+
+    <Label text="My Profile" styleClass="page-title"/>
+
+    <VBox styleClass="card" maxWidth="500" spacing="15">
+        <padding><Insets top="20" right="30" bottom="30" left="30"/></padding>
+
+        <HBox spacing="10">
+             <Label text="Name:" style="-fx-font-weight:bold; -fx-min-width: 80;"/>
+             <Label fx:id="lblName" text="-" />
+        </HBox>
+
+        <HBox spacing="10">
+             <Label fx:id="lblIdLabel" text="IC No:" style="-fx-font-weight:bold; -fx-min-width: 80;"/>
+             <Label fx:id="lblId" text="-" />
+        </HBox>
+
+        <HBox spacing="10">
+             <Label text="Email:" style="-fx-font-weight:bold; -fx-min-width: 80;"/>
+             <Label fx:id="lblEmail" text="-" />
+        </HBox>
+
+        <HBox spacing="10">
+             <Label text="Phone:" style="-fx-font-weight:bold; -fx-min-width: 80;"/>
+             <Label fx:id="lblPhone" text="-" />
+        </HBox>
+
+        <HBox spacing="10">
+             <Label text="Gender:" style="-fx-font-weight:bold; -fx-min-width: 80;"/>
+             <Label fx:id="lblGender" text="-" />
+        </HBox>
+
+        <Separator />
+
+        <Button text="✎ Edit Profile" styleClass="button, btn-primary" maxWidth="Infinity" onAction="#handleEdit"/>
+    </VBox>
+</VBox>

@@ -25,7 +25,8 @@
 
     <Button text="Login" onAction="#handleLogin" 
             style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-pref-width: 100px;"/>
-
+    <Button text="No Account? Sign Up" onAction="#goToRegister" 
+            style="-fx-background-color: transparent; -fx-text-fill: #0078D7; -fx-underline: true; -fx-cursor: hand;"/>
     <Button text="← Back" onAction="#handleBack" 
             style="-fx-background-color: transparent; -fx-text-fill: grey; -fx-underline: true;"/>
 </VBox>

@@ -63,4 +63,13 @@ public class AuthenticationService {
         System.out.println("❌ Authorization Failed: Only Managers can register new staff.");
         return false;
     }
+
+    // Update Profile Logic
+    public boolean updateCustomerProfile(Customer customer) {
+        return userRepo.updateCustomer(customer);
+    }
+
+    public boolean updateStaffProfile(Staff staff) {
+        return userRepo.updateStaff(staff);
+    }
 }

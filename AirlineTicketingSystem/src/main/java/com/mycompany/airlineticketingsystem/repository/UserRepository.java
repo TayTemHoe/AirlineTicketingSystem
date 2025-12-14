@@ -15,4 +15,6 @@ import java.util.Optional;
 public interface UserRepository {
     Optional<Staff> findStaffById(String staffId);
     Optional<Customer> findCustomerByIc(String icNo);
+    boolean updateCustomer(Customer customer);
+    boolean updateStaff(Staff staff);
 }

@@ -20,7 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import java.io.IOException;
-import util.ValidationUtils;
+import com.mycompany.airlineticketingsystem.util.ValidationUtils;
 
 public class CustomerRegisterController {
 
@@ -68,6 +68,11 @@ public class CustomerRegisterController {
         
         if (gender == null) {
             showError("Please select a gender.");
+            return;
+        }
+        
+        if (!ValidationUtils.isValidPassword(pass)) {
+            showError("Password must be 6-8 chars, include 1 Upper, 1 Lower, 1 Number, 1 Symbol (@#$%^&+=!).");
             return;
         }
 

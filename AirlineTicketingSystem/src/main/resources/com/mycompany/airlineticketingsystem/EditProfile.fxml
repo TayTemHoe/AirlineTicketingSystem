@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" 
+            xmlns="http://javafx.com/javafx/21" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.mycompany.airlineticketingsystem.controller.EditProfileController"
+            stylesheets="@customer-style.css">
+
+    <content>
+        <VBox spacing="20.0" alignment="TOP_CENTER" style="-fx-padding: 30;">
+            
+            <Label text="Edit Profile" styleClass="page-title"/>
+            
+            <VBox styleClass="card" maxWidth="500" spacing="15">
+                <Label text="Personal Information" styleClass="section-title"/>
+                
+                <VBox spacing="5">
+                    <Label text="Full Name"/>
+                    <TextField fx:id="txtName" />
+                </VBox>
+
+                <VBox spacing="5">
+                    <Label text="Email Address"/>
+                    <TextField fx:id="txtEmail" />
+                </VBox>
+
+                <VBox spacing="5">
+                    <Label text="Phone Number"/>
+                    <TextField fx:id="txtPhone" />
+                </VBox>
+
+                <VBox spacing="5">
+                    <Label text="Gender"/>
+                    <ComboBox fx:id="comboGender" maxWidth="Infinity"/>
+                </VBox>
+
+                <Button text="Save Information" styleClass="button, btn-primary" maxWidth="Infinity" onAction="#handleSaveInfo"/>
+            </VBox>
+            
+            <Label fx:id="Status" textFill="BLUE" style="-fx-font-weight:bold;"/>
+
+            <VBox styleClass="card" maxWidth="500" spacing="15">
+                <Label text="Change Password" styleClass="section-title"/>
+                
+                <VBox spacing="5">
+                    <Label text="Current Password"/>
+                    <PasswordField fx:id="txtCurrentPass" />
+                </VBox>
+
+                <Separator />
+
+                <VBox spacing="5">
+                    <Label text="New Password"/>
+                    <PasswordField fx:id="txtNewPass" />
+                </VBox>
+
+                <VBox spacing="5">
+                    <Label text="Confirm New Password"/>
+                    <PasswordField fx:id="txtConfirmPass" />
+                </VBox>
+
+                <Button text="Update Password" styleClass="button, btn-danger" maxWidth="Infinity" onAction="#handleUpdatePassword"/>
+            </VBox>
+
+            <Label fx:id="lblStatus" textFill="BLUE" style="-fx-font-weight:bold;"/>
+            
+            <Button text="← Back to Profile" styleClass="button" onAction="#handleBack"/>
+
+        </VBox>
+    </content>
+</ScrollPane>

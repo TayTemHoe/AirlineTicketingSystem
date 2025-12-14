@@ -13,6 +13,7 @@ import com.mycompany.airlineticketingsystem.enums.Gender;
 import com.mycompany.airlineticketingsystem.model.Staff;
 import com.mycompany.airlineticketingsystem.service.AuthenticationService;
 import com.mycompany.airlineticketingsystem.session.UserSession; // See helper class below
+import com.mycompany.airlineticketingsystem.util.ValidationUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -111,6 +112,10 @@ public class StaffManagementController {
         Optional<Staff> result = dialog.showAndWait();
 
         result.ifPresent(newStaff -> {
+            if (!ValidationUtils.isValidPassword(newStaff.getPassword())) {
+                 new Alert(Alert.AlertType.ERROR, "Staff NOT added: Password invalid.\nMust be 6-8 chars, 1 Upper, 1 Lower, 1 Number, 1 Symbol.").show();
+                 return;
+             }
             Staff requester = UserSession.getInstance().getLoggedInStaff();
             boolean success = authService.registerNewStaff(requester.getStaffId(), newStaff);
             

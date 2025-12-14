@@ -1,3 +1,5 @@
+package com.mycompany.airlineticketingsystem.model;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -8,7 +10,6 @@
  * @author Tay Tem Hoe
  */
 import com.mycompany.airlineticketingsystem.enums.Gender;
-import com.mycompany.airlineticketingsystem.model.Person;
 
 public class Passenger extends Person {
     

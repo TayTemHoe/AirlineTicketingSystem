@@ -123,4 +123,46 @@ public class UserRepositoryImpl implements UserRepository{
         }
         return "S001"; // Default if table empty
     }
+    
+    // ... existing code ...
+
+    @Override
+    public boolean updateCustomer(Customer customer) {
+        String sql = "UPDATE customer SET name=?, email=?, phone_number=?, gender=?, password=? WHERE ic_no=?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, customer.getName());
+            stmt.setString(2, customer.getEmail());
+            stmt.setString(3, customer.getPhoneNumber());
+            stmt.setString(4, customer.getGender().name());
+            stmt.setString(5, customer.getPassword());
+            stmt.setString(6, customer.getIcNo()); // Where clause
+            
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateStaff(Staff staff) {
+        String sql = "UPDATE staff SET name=?, email=?, phone_number=?, gender=?, password=? WHERE staff_id=?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, staff.getName());
+            stmt.setString(2, staff.getEmail());
+            stmt.setString(3, staff.getPhoneNumber());
+            stmt.setString(4, staff.getGender().name());
+            stmt.setString(5, staff.getPassword());
+            stmt.setString(6, staff.getStaffId()); // Where clause
+            
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
