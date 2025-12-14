@@ -1,0 +1,131 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 14 Dec 2025, 4:31:44 pm
+    Author     : Tay Tem Hoe
+*/
+/* =============================================================================
+   ADMIN DASHBOARD THEME
+   ============================================================================= */
+.root {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #f4f6f9; /* Light Grey Dashboard BG */
+}
+
+/* ================= SIDEBAR (Sticky Left) ================= */
+.sidebar {
+    -fx-background-color: #343a40; /* Dark Grey/Black */
+    -fx-padding: 20 10;
+    -fx-spacing: 10;
+    -fx-pref-width: 220;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);
+}
+
+.sidebar-title {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 20 10;
+    -fx-border-color: transparent transparent #4b545c transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* Sidebar Navigation Buttons */
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #c2c7d0;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 15;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
+}
+
+.nav-button:hover {
+    -fx-background-color: #494e53;
+    -fx-text-fill: white;
+}
+
+/* Active State (Selected Tab) */
+.nav-button-active {
+    -fx-background-color: #007bff; /* Admin Blue */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* ================= TOP TOOLBAR ================= */
+.top-bar {
+    -fx-background-color: white;
+    -fx-padding: 10 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+    -fx-alignment: CENTER_LEFT;
+}
+
+.breadcrumb-label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #343a40;
+}
+
+/* ================= CONTENT CARDS ================= */
+.content-card {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1);
+    -fx-padding: 20;
+}
+
+.section-header {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+    -fx-padding: 0 0 10 0;
+    -fx-border-color: transparent transparent #dee2e6 transparent;
+}
+
+/* ================= FORMS & INPUTS ================= */
+.text-field, .combo-box, .date-picker, .text-area {
+    -fx-background-color: white;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 3;
+    -fx-padding: 8;
+}
+
+.text-field:focused {
+    -fx-border-color: #80bdff;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.25), 4, 0, 0, 0);
+}
+
+/* ================= BUTTONS ================= */
+.btn-primary {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.btn-primary:hover { -fx-background-color: #0069d9; }
+
+.btn-danger {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+.btn-danger:hover { -fx-background-color: #c82333; }
+
+.btn-success {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+.btn-success:hover { -fx-background-color: #218838; }
+
+/* ================= CHART CARDS ================= */
+.chart-card {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
+    -fx-padding: 10;
+}

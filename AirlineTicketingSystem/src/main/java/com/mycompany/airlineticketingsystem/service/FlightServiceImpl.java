@@ -16,7 +16,6 @@ import java.util.List;
 
 public class FlightServiceImpl implements FlightService {
 
-    // Dependencies (We manually inject them for now, Spring Boot does this auto in real frameworks)
     private final FlightRepository flightRepository;
     private final SeatRepository seatRepository;
 
@@ -27,24 +26,28 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public void createFlight(Flight flight, Plane plane) {
-        // 1. Validation (Business Rule)
-        if (flight.getArriveTime().isBefore(flight.getDepartTime())) {
-            throw new IllegalArgumentException("Arrival time cannot be before Departure time!");
-        }
-
-        // 2. Save the Flight Header
+        // 1. Save Flight
         flightRepository.save(flight);
 
-        // 3. Generate Seats (Factory Logic)
+        // 2. Generate Seats with NEW ID FORMAT
         List<Seat> newSeats = generateSeatsForPlane(flight.getFlightId(), plane.getCapacity());
 
-        // 4. Save Seats
+        // 3. Save Seats
         seatRepository.saveAll(newSeats);
+    }
+
+    // New Update Method
+    public void updateFlight(Flight flight) {
+        flightRepository.save(flight); // save() usually handles UPSERT (Update if exists)
+    }
+
+    // New Delete Method
+    public void deleteFlight(String flightId) {
+        flightRepository.delete(flightId);
     }
 
     @Override
     public List<Flight> searchFlights(String from, String to, LocalDate date) {
-        // Simple delegator to repository
         return flightRepository.searchFlights(from, to, date);
     }
 
@@ -58,31 +61,21 @@ public class FlightServiceImpl implements FlightService {
         return flightRepository.findAll();
     }
 
-    /**
-     * FACTORY METHOD: Generates seats based on capacity.
-     * Legacy Logic: 4 seats per row. Row 1 is Business, rest are Economy.
-     */
     private List<Seat> generateSeatsForPlane(String flightId, int capacity) {
         List<Seat> generatedSeats = new ArrayList<>();
         int rows = capacity / 4; 
-        
         char[] colLetters = {'A', 'B', 'C', 'D'};
 
         for (int row = 1; row <= rows; row++) {
             for (int col = 0; col < 4; col++) {
-                
-                // Determine Type: Row 1 is Business (High-Value rule)
                 SeatType type = (row == 1) ? SeatType.BUSINESS : SeatType.ECONOMY;
                 
-                // Seat Number: "1A", "1B", etc.
                 String seatNum = row + String.valueOf(colLetters[col]);
+                
+                // NEW ID LOGIC: "FlightID-SeatNum" (e.g. MH370-1A)
+                String uniqueId = flightId + "-" + seatNum;
 
-                Seat seat = new Seat();
-                seat.setSeatNumber(seatNum);
-                seat.setType(type);
-                seat.setStatus(SeatStatus.AVAILABLE); // Default status
-                seat.setFlightId(flightId);
-
+                Seat seat = new Seat(uniqueId, seatNum, type, SeatStatus.AVAILABLE, flightId);
                 generatedSeats.add(seat);
             }
         }

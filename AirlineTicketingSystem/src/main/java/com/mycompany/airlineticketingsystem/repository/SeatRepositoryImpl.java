@@ -32,7 +32,7 @@ public class SeatRepositoryImpl implements SeatRepository {
             // Batch Processing (Optimization for High Marks)
             // Instead of sending 100 separate queries, we bundle them.
             for (Seat seat : seats) {
-                stmt.setString(1, seat.getSeatNumber());
+                stmt.setString(1, seat.getSeatId());
                 stmt.setString(2, seat.getType().name());
                 stmt.setString(3, seat.getStatus().name());
                 stmt.setString(4, seat.getFlightId());
@@ -60,7 +60,7 @@ public class SeatRepositoryImpl implements SeatRepository {
 
             while (rs.next()) {
                 Seat s = new Seat(
-                    rs.getInt("seat_id"),
+                    rs.getString("seat_id"),
                     rs.getString("seat_number"),
                     SeatType.valueOf(rs.getString("type")),
                     SeatStatus.valueOf(rs.getString("status")),

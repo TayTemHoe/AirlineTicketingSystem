@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 
 <VBox spacing="20.0" alignment="TOP_CENTER"
-      xmlns="http://javafx.com/javafx/21" 
+      xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1" 
       fx:controller="com.mycompany.airlineticketingsystem.controller.ProfileController"
       stylesheets="@customer-style.css">

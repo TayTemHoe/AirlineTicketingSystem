@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
+
+<VBox spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.mycompany.airlineticketingsystem.controller.FlightManagementController"
+      stylesheets="@staff-style.css">
+
+    <VBox styleClass="content-card" spacing="15">
+        <Label text="Flight Management" styleClass="section-header"/>
+        
+        <GridPane hgap="15" vgap="15">
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <Label text="Depart Country"/><TextField fx:id="txtDepartCountry" promptText="e.g. Malaysia"/>
+            </VBox>
+            <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <Label text="Arrive Country"/><TextField fx:id="txtArriveCountry" promptText="e.g. Japan"/>
+            </VBox>
+            
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <Label text="Depart Date"/><DatePicker fx:id="dateDepart" maxWidth="Infinity"/>
+            </VBox>
+            <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Label text="Arrive Date"/><DatePicker fx:id="dateArrive" maxWidth="Infinity"/>
+            </VBox>
+            <VBox GridPane.columnIndex="2" GridPane.rowIndex="1">
+                <Label text="Depart Time"/><TextField fx:id="txtDepartTime" promptText="14:30"/>
+            </VBox>
+            <VBox GridPane.columnIndex="3" GridPane.rowIndex="1">
+                <Label text="Arrive Time"/><TextField fx:id="txtArriveTime" promptText="22:00"/>
+            </VBox>
+
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="2">
+                <Label text="Plane ID"/><TextField fx:id="txtPlaneId" promptText="e.g. PL009"/>
+            </VBox>
+             <VBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <Label text="Model Name"/><TextField fx:id="txtModel" promptText="e.g. Boeing 777"/>
+            </VBox>
+            <VBox GridPane.columnIndex="2" GridPane.rowIndex="2">
+                <Label text="Capacity"/><TextField fx:id="txtCapacity" promptText="e.g. 60"/>
+            </VBox>
+
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="3">
+                <Label text="Eco Price"/><TextField fx:id="txtEcoPrice"/>
+            </VBox>
+            <VBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <Label text="Biz Price"/><TextField fx:id="txtBizPrice"/>
+            </VBox>
+        </GridPane>
+        
+        <HBox alignment="CENTER_RIGHT" spacing="10">
+            <Button fx:id="btnAction" text="Create Flight &amp; Generate Seats" styleClass="btn-primary" onAction="#handleCreateOrUpdate"/>
+        </HBox>
+    </VBox>
+
+    <Separator />
+
+    <VBox styleClass="content-card" VBox.vgrow="ALWAYS">
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label text="Flight Schedule" styleClass="section-header"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="↻ Refresh" onAction="#handleRefresh"/>
+        </HBox>
+
+        <TableView fx:id="tableFlights" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
+                <TableColumn fx:id="colRoute" text="Route" prefWidth="150"/>
+                <TableColumn fx:id="colDate" text="Departure" prefWidth="130"/>
+                <TableColumn fx:id="colPrice" text="Prices" prefWidth="120"/>
+                
+                <TableColumn fx:id="colModel" text="Model" prefWidth="100"/>
+                <TableColumn fx:id="colCapacity" text="Cap." prefWidth="50"/>
+                <TableColumn fx:id="colAvailable" text="Avail." prefWidth="50" style="-fx-text-fill: green; -fx-alignment: center;"/>
+                <TableColumn fx:id="colBooked" text="Booked" prefWidth="50" style="-fx-text-fill: red; -fx-alignment: center;"/>
+                <TableColumn fx:id="colAction" text="Actions" prefWidth="90"/>
+            </columns>
+        </TableView>
+    </VBox>
+</VBox>

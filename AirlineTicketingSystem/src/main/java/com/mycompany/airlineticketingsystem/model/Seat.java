@@ -5,17 +5,15 @@ import com.mycompany.airlineticketingsystem.enums.SeatStatus;
 
 public class Seat {
 
-    private int id;                 // Database ID (Primary Key)
-    private String seatNumber;      // e.g., "1A", "10C"
-    private SeatType type;          // Enum: ECONOMY/BUSINESS
-    private SeatStatus status;      // Enum: AVAILABLE/BOOKED
-    private String flightId;        // Foreign Key to Flight
+    private String id;              // CHANGED from int to String (e.g., "MH370-1A")
+    private String seatNumber;      // e.g., "1A"
+    private SeatType type;          
+    private SeatStatus status;      
+    private String flightId;        
 
-    // Constructors
-    public Seat() {
-    }
+    public Seat() {}
 
-    public Seat(int id, String seatNumber, SeatType type, SeatStatus status, String flightId) {
+    public Seat(String id, String seatNumber, SeatType type, SeatStatus status, String flightId) {
         this.id = id;
         this.seatNumber = seatNumber;
         this.type = type;
@@ -23,14 +21,9 @@ public class Seat {
         this.flightId = flightId;
     }
 
-    // --- Helper Logic (Moved from Legacy) ---
-    public boolean isAvailable() {
-        return this.status == SeatStatus.AVAILABLE;
-    }
-
-    // --- Getters and Setters ---
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    // Getters and Setters
+    public String getSeatId() { return id; }
+    public void setSeatId(String id) { this.id = id; }
 
     public String getSeatNumber() { return seatNumber; }
     public void setSeatNumber(String seatNumber) { this.seatNumber = seatNumber; }
@@ -43,9 +36,4 @@ public class Seat {
 
     public String getFlightId() { return flightId; }
     public void setFlightId(String flightId) { this.flightId = flightId; }
-
-    @Override
-    public String toString() {
-        return String.format("[%s] %s - %s (%s)", seatNumber, type, status, flightId);
-    }
 }

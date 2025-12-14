@@ -40,7 +40,7 @@ public class StaffLoginController {
             System.out.println("Login Successful: " + staff.get().getName());
 
             // Redirect
-            AirlineTicketingSystem.setRoot("FlightDashboard"); 
+            AirlineTicketingSystem.setRoot("StaffMainLayout"); 
         } else {
             statusLabel.setText("Invalid Staff ID or Password");
             statusLabel.setStyle("-fx-text-fill: red;");
