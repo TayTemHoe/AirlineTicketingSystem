@@ -29,4 +29,5 @@ public class BookingServiceImpl implements BookingService {
     public void updateSeatStatus(String flightId, String seatNumber) {
         bookingRepository.updateSeatStatus(flightId, seatNumber);
     }
+    
 }

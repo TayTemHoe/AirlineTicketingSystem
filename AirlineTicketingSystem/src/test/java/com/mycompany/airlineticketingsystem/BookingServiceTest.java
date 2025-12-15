@@ -1,4 +1,4 @@
-package com.mycompany.airlineticketingsystem.service;
+package com.mycompany.airlineticketingsystem;
 
 import com.mycompany.airlineticketingsystem.model.Booking;
 import com.mycompany.airlineticketingsystem.repository.BookingRepositoryImpl;

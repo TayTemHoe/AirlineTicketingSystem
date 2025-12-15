@@ -8,4 +8,5 @@ public interface BookingService {
     String generateNewBookingId();
 
     void updateSeatStatus(String flightId, String seatNumber);
+    
 }

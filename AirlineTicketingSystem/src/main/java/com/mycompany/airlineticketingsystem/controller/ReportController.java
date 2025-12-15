@@ -13,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.TextArea;
 import java.util.Map;
-import javafx.scene.chart.XYChart;
 
 public class ReportController {
 
@@ -33,36 +32,46 @@ public class ReportController {
     private void loadData() {
         // 1. Load Text Summary (Total Earnings)
         StringBuilder sb = new StringBuilder();
-        sb.append("=== REVENUE SUMMARY REPORT ===\n");
+        sb.append("=== COMPANY REVENUE REPORT ===\n\n");
         
         Map<String, Double> revenue = reportService.getRevenueByMethod();
         double totalEarnings = 0.0;
         
-        for (Map.Entry<String, Double> entry : revenue.entrySet()) {
-            sb.append(String.format("Method: %-15s | Total: RM %.2f\n", entry.getKey(), entry.getValue()));
-            totalEarnings += entry.getValue();
+        if (revenue.isEmpty()) {
+            sb.append("No revenue data available.\n");
+        } else {
+            for (Map.Entry<String, Double> entry : revenue.entrySet()) {
+                sb.append(String.format("Method: %-15s | Total: RM %.2f\n", entry.getKey(), entry.getValue()));
+                totalEarnings += entry.getValue();
+            }
+            sb.append("\n------------------------------------------------\n");
+            sb.append(String.format("TOTAL EARNINGS:         RM %.2f\n", totalEarnings));
+            sb.append("------------------------------------------------\n");
         }
-        sb.append("------------------------------------------------\n");
-        sb.append(String.format("TOTAL COMPANY EARNINGS:     RM %.2f\n", totalEarnings));
         
         txtSummary.setText(sb.toString());
 
         // 2. Load Charts
+        
         // A. Revenue Bar
         barRevenue.getData().clear();
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Revenue");
+        series.setName("Revenue by Method");
         revenue.forEach((k, v) -> series.getData().add(new XYChart.Data<>(k, v)));
         barRevenue.getData().add(series);
 
         // B. Destinations Pie
         pieDestinations.getData().clear();
-        reportService.getTopDestinations().forEach((k, v) -> 
+        Map<String, Integer> destinations = reportService.getTopDestinations();
+        destinations.forEach((k, v) -> 
             pieDestinations.getData().add(new PieChart.Data(k + " (" + v + ")", v)));
 
         // C. Gender Pie
         pieGender.getData().clear();
-        reportService.getCustomerGenderDistribution().forEach((k, v) -> 
-            pieGender.getData().add(new PieChart.Data(k, v)));
+        Map<String, Integer> genderDist = reportService.getCustomerGenderDistribution();
+        genderDist.forEach((k, v) -> 
+            pieGender.getData().add(new PieChart.Data(k + " (" + v + ")", v)));
     }
+    
+    
 }

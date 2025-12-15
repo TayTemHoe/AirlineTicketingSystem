@@ -3,6 +3,7 @@ package com.mycompany.airlineticketingsystem.repository;
 import com.mycompany.airlineticketingsystem.config.DatabaseConnection;
 import com.mycompany.airlineticketingsystem.model.PassengerEntity;
 import java.sql.*;
+import java.util.Optional;
 
 public class PassengerRepositoryImpl implements PassengerRepository {
 

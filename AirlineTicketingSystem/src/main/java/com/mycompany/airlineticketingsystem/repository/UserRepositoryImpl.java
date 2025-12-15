@@ -20,26 +20,24 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     public Optional<Staff> findStaffById(String staffId) {
         String sql = "SELECT * FROM staff WHERE staff_id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
-            stmt.setString(1, staffId);
-            ResultSet rs = stmt.executeQuery();
-            
-            if (rs.next()) {
-                return Optional.of(new Staff(
-                    rs.getString("staff_id"),
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getString("phone_number"),
-                    Gender.fromString(rs.getString("gender")),
-                    rs.getString("position"),
-                    rs.getString("password")
-                ));
+        try {
+            Connection conn = DatabaseConnection.getConnection();
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, staffId);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    return Optional.of(new Staff(
+                        rs.getString("staff_id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("phone_number"),
+                        Gender.fromString(rs.getString("gender")),
+                        rs.getString("position"),
+                        rs.getString("password")
+                    ));
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return Optional.empty();
     }
 
@@ -47,25 +45,23 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     public Optional<Customer> findCustomerByIc(String icNo) {
         String sql = "SELECT * FROM customer WHERE ic_no = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
-            stmt.setString(1, icNo);
-            ResultSet rs = stmt.executeQuery();
-            
-            if (rs.next()) {
-                return Optional.of(new Customer(
-                    rs.getString("ic_no"),
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getString("phone_number"),
-                    Gender.fromString(rs.getString("gender")),
-                    rs.getString("password")
-                ));
+        try {
+            Connection conn = DatabaseConnection.getConnection();
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, icNo);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    return Optional.of(new Customer(
+                        rs.getString("ic_no"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("phone_number"),
+                        Gender.fromString(rs.getString("gender")),
+                        rs.getString("password")
+                    ));
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return Optional.empty();
     }
     
@@ -174,24 +170,25 @@ public class UserRepositoryImpl implements UserRepository{
         List<Staff> staffList = new ArrayList<>();
         String sql = "SELECT * FROM staff ORDER BY staff_id";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        // ✅ FIX: Connection outside try block
+        try {
+            Connection conn = DatabaseConnection.getConnection();
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(sql)) {
 
-            while (rs.next()) {
-                // Convert DB String to Enum safely
-                Gender gender = Gender.fromString(rs.getString("gender"));
-
-                Staff s = new Staff(
-                    rs.getString("staff_id"),
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getString("phone_number"),
-                    gender,
-                    rs.getString("position"),
-                    rs.getString("password")
-                );
-                staffList.add(s);
+                while (rs.next()) {
+                    Gender gender = Gender.fromString(rs.getString("gender"));
+                    Staff s = new Staff(
+                        rs.getString("staff_id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("phone_number"),
+                        gender,
+                        rs.getString("position"),
+                        rs.getString("password")
+                    );
+                    staffList.add(s);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

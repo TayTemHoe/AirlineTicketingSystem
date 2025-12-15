@@ -21,7 +21,7 @@
             
             <HBox alignment="CENTER_LEFT" spacing="20">
                 <Label text="Analytics &amp; Financial Reports" styleClass="section-header" style="-fx-font-size: 24px;"/>
-                <Button text="↻ Refresh Data" onAction="#loadData"/>
+                <Button text="↻ Refresh Data" onAction="#loadData" styleClass="button"/>
             </HBox>
 
             <VBox styleClass="content-card">

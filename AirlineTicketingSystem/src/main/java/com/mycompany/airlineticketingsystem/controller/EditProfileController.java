@@ -26,6 +26,8 @@ import java.io.IOException;
 
 public class EditProfileController {
 
+    @FXML private ScrollPane root; // Links to fx:id="root" in FXML
+
     // Info Fields
     @FXML private TextField txtName;
     @FXML private TextField txtEmail;
@@ -46,6 +48,18 @@ public class EditProfileController {
     public void initialize() {
         comboGender.getItems().setAll(Gender.values());
 
+        // --- DYNAMIC CSS LOADING ---
+        String cssFile;
+        if (session.getLoggedInStaff() != null) {
+            cssFile = "/com/mycompany/airlineticketingsystem/staff-style.css";
+        } else {
+            cssFile = "/com/mycompany/airlineticketingsystem/customer-style.css";
+        }
+        // Force the stylesheet onto the root node
+        root.getStylesheets().clear();
+        root.getStylesheets().add(getClass().getResource(cssFile).toExternalForm());
+        // ---------------------------
+
         // Pre-fill fields with current data
         if (session.getLoggedInCustomer() != null) {
             Customer c = session.getLoggedInCustomer();
@@ -63,6 +77,33 @@ public class EditProfileController {
         }
     }
 
+    // ... (Keep existing handleSaveInfo, handleUpdatePassword, etc.) ...
+
+    @FXML
+    private void handleBack() {
+        try {
+            Parent view = FXMLLoader.load(getClass().getResource("/com/mycompany/airlineticketingsystem/UserProfile.fxml"));
+            // Get the main layout from the current scene root
+            BorderPane mainLayout = (BorderPane) root.getScene().getRoot();
+            if (mainLayout.getCenter() instanceof StackPane) {
+                ((StackPane) mainLayout.getCenter()).getChildren().setAll(view);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // ... (Keep helper methods setStatus, setStatusI) ...
+    private void setStatusI(String msg, boolean isError) {
+        Status.setText(msg);
+        Status.setStyle(isError ? "-fx-text-fill: red;" : "-fx-text-fill: green;");
+    }
+
+    private void setStatus(String msg, boolean isError) {
+        lblStatus.setText(msg);
+        lblStatus.setStyle(isError ? "-fx-text-fill: red;" : "-fx-text-fill: green;");
+    }
+    
     // --- PART 1: SAVE INFO ONLY ---
     @FXML
     private void handleSaveInfo() {
@@ -162,28 +203,5 @@ public class EditProfileController {
         } else {
             setStatus("Error changing password.", true);
         }
-    }
-
-    @FXML
-    private void handleBack() {
-        try {
-            Parent view = FXMLLoader.load(getClass().getResource("/com/mycompany/airlineticketingsystem/UserProfile.fxml"));
-            BorderPane mainLayout = (BorderPane) txtName.getScene().getRoot();
-            if (mainLayout.getCenter() instanceof StackPane) {
-                ((StackPane) mainLayout.getCenter()).getChildren().setAll(view);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    private void setStatusI(String msg, boolean isError) {
-        Status.setText(msg);
-        Status.setStyle(isError ? "-fx-text-fill: red;" : "-fx-text-fill: green;");
-    }
-
-    private void setStatus(String msg, boolean isError) {
-        lblStatus.setText(msg);
-        lblStatus.setStyle(isError ? "-fx-text-fill: red;" : "-fx-text-fill: green;");
     }
 }

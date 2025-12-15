@@ -66,15 +66,11 @@ public class FlightSearchController {
 
     @FXML
     private void handleSearch() {
-        String from = comboFrom.getValue();
-        String to = comboTo.getValue();
-        java.time.LocalDate date = datePicker.getValue();
-
-        List<Flight> results = flightService.getAllFlights().stream()
-                .filter(f -> from == null || f.getDepartCountry().equals(from))
-                .filter(f -> to == null || f.getArriveCountry().equals(to))
-                .filter(f -> date == null || f.getDepartTime().toLocalDate().equals(date))
-                .collect(Collectors.toList());
+        // This uses the NEW searchFlights method which filters the local list
+        List<Flight> results = flightService.searchFlights(
+                comboFrom.getValue(), 
+                comboTo.getValue(), 
+                datePicker.getValue());
 
         renderFlightCards(results);
     }

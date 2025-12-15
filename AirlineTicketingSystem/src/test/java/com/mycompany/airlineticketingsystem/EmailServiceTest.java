@@ -1,4 +1,4 @@
-package com.mycompany.airlineticketingsystem.service;
+package com.mycompany.airlineticketingsystem;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -16,11 +16,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import java.io.IOException;
 
 public class ProfileController {
 
+    @FXML private Pane root; // Links to fx:id="root"
     @FXML private Label lblName;
     @FXML private Label lblIdLabel;
     @FXML private Label lblId;
@@ -31,6 +33,17 @@ public class ProfileController {
     @FXML
     public void initialize() {
         UserSession session = UserSession.getInstance();
+
+        // --- DYNAMIC CSS LOADING ---
+        String cssFile;
+        if (session.getLoggedInStaff() != null) {
+            cssFile = "/com/mycompany/airlineticketingsystem/staff-style.css";
+        } else {
+            cssFile = "/com/mycompany/airlineticketingsystem/customer-style.css";
+        }
+        root.getStylesheets().clear();
+        root.getStylesheets().add(getClass().getResource(cssFile).toExternalForm());
+        // ---------------------------
 
         if (session.getLoggedInCustomer() != null) {
             Customer c = session.getLoggedInCustomer();
@@ -55,16 +68,10 @@ public class ProfileController {
     @FXML
     private void handleEdit() {
         try {
-            // Load Edit Profile View into Center Area
             Parent editView = FXMLLoader.load(getClass().getResource("/com/mycompany/airlineticketingsystem/EditProfile.fxml"));
-            
-            // Find the Main Layout and switch
-            BorderPane mainLayout = (BorderPane) lblName.getScene().getRoot();
-            // Note: If logged in as Staff, structure might be different, but for CustomerMainLayout:
+            BorderPane mainLayout = (BorderPane) root.getScene().getRoot();
             if (mainLayout.getCenter() instanceof StackPane) {
-                StackPane contentArea = (StackPane) mainLayout.getCenter();
-                contentArea.getChildren().clear();
-                contentArea.getChildren().add(editView);
+                ((StackPane) mainLayout.getCenter()).getChildren().setAll(editView);
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -24,5 +24,6 @@ public interface FlightRepository {
     void delete(String flightId);
     
     List<Plane> findAllPlane();
+    
 }
 

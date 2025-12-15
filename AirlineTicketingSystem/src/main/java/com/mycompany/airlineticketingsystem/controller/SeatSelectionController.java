@@ -39,6 +39,7 @@ import com.mycompany.airlineticketingsystem.model.TicketEntity;
 import com.mycompany.airlineticketingsystem.session.UserSession; // Added
 import com.mycompany.airlineticketingsystem.model.Customer; // Added
 import com.mycompany.airlineticketingsystem.service.TicketEntityService;
+import com.mycompany.airlineticketingsystem.view.PaymentView;
 import java.math.BigDecimal; // Added
 import java.util.UUID; // Added
 import javafx.application.Platform; // Added for UI updates if needed
@@ -180,72 +181,67 @@ public class SeatSelectionController {
 
     @FXML
     private void handleConfirm() {
-        if (selectedSeat == null) {
-            return;
-        }
+        if (selectedSeat == null) return;
 
-        // 1) Ask passenger details
+        // 1. Get Passenger Details
         PassengerDetails details = showPassengerDetailsDialog(selectedSeat.getSeatNumber());
-        if (details == null) {
-            return;
-        }
+        if (details == null) return;
 
-        // 2) Ask confirm/recheck (loop if recheck)
+        // 2. Confirm Details
         while (true) {
             boolean ok = showConfirmPassengerDialog(selectedSeat.getSeatNumber(), details);
-            if (ok) {
-                break;
-            }
-
+            if (ok) break;
             PassengerDetails recheck = showPassengerDetailsDialog(selectedSeat.getSeatNumber());
-            if (recheck == null) {
-                return; // cancelled during recheck
-            }
+            if (recheck == null) return;
             details = recheck;
         }
-
-        // 3) Skip payment for now -> save to DB, generate ticket PDF & email
         passengerDetails = details;
 
-        // --- Save Booking to Database ---
         try {
+            // 3. Create Booking Object
             BigDecimal price = (selectedSeat.getType() == SeatType.BUSINESS)
                     ? currentFlight.getPriceBusiness()
                     : currentFlight.getPriceEconomy();
 
+            String newBookingId = bookingService.generateNewBookingId();
             Booking booking = new Booking();
-            // booking.setBookingId(UUID.randomUUID().toString()); // OLD
-            String newBookingId = bookingService.generateNewBookingId(); // NEW Sequential
             booking.setBookingId(newBookingId);
             booking.setFlightId(currentFlight.getFlightId());
-            booking.setIcNo(passengerDetails.getPassportNumber()); // Using passport no as IC/ID
-            booking.setStatus("CONFIRMED");
+            booking.setIcNo(passengerDetails.getPassportNumber()); // Or Customer IC
+            booking.setStatus("PENDING"); // ⚠️ IMPORTANT: Start as PENDING
             booking.setBookingDate(LocalDateTime.now());
-            // Ensure seat has ID. If not, fallback to seat number or generated format.
-            // Assuming Seat object has getSeatId() populated as seen in Seat.java logic
+            
             String seatId = selectedSeat.getSeatId();
             if (seatId == null || seatId.trim().isEmpty()) {
-                seatId = currentFlight.getFlightId() + "-" + selectedSeat.getSeatNumber(); // Fallback ID generation
+                seatId = currentFlight.getFlightId() + "-" + selectedSeat.getSeatNumber();
             }
             booking.setSeatId(seatId);
             booking.setTotalPrice(price);
 
-            // --- 1. Save Booking to DB ---
-            boolean success = bookingService.saveBooking(booking);
+            // 4. Save Booking (PENDING)
+            boolean bookingSaved = bookingService.saveBooking(booking);
+            
+            if (!bookingSaved) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Could not create booking.");
+                return;
+            }
 
-            if (success) {
-                System.out.println("Booking saved for seat: " + selectedSeat.getSeatNumber());
+            // 5. PROCESS PAYMENT
+            PaymentView paymentView = new PaymentView();
+            // This blocks until user pays or closes
+            paymentView.showPaymentScreen(booking.getBookingId(), price.doubleValue()); 
 
-                // --- 2. Save Passenger to DB (Only if booking succeeded) ---
+            if (paymentView.isPaymentSuccess()) {
+                // --- PAYMENT SUCCESSFUL ---
+                
+                // 6. Save Passenger Info
                 PassengerEntity passengerDto = new PassengerEntity(
                         passengerDetails.getPassportNumber(),
                         passengerDetails.getFullName());
                 passengerService.savePassenger(passengerDto);
 
-                // --- 3. Save Ticket to DB ---
+                // 7. Save Ticket
                 String ticketId = ticketEntityService.generateNewTicketId();
-
-                // Retrieve Logged-in Customer IC
                 Customer customer = UserSession.getInstance().getLoggedInCustomer();
                 String customerIc = (customer != null) ? customer.getIcNo() : "GUEST";
 
@@ -254,35 +250,33 @@ public class SeatSelectionController {
                         currentFlight.getFlightId(),
                         seatId,
                         selectedSeat.getSeatNumber(),
-                        passengerDetails.getPassportNumber(), // passengerPassportNumber
-                        customerIc // customerIcNumber (from Session)
+                        passengerDetails.getPassportNumber(),
+                        customerIc
                 );
                 ticketEntityService.saveTicket(ticketDto);
 
-                // --- 4. Update Seat Status in DB & Refresh UI ---
+                // 8. Update Seat to BOOKED (PaymentService already updated booking status to CONFIRMED)
                 bookingService.updateSeatStatus(currentFlight.getFlightId(), selectedSeat.getSeatNumber());
-                loadSeats(); // Refresh grid to show greyed out seat
+                
+                // 9. Refresh UI & Generate Ticket
+                loadSeats();
+                generateTicketAndEmail(passengerDetails, customerIc);
 
-                // --- 5. Generate PDF + Email ---
-                generateTicketAndEmail(passengerDetails, customerIc); // Pass IC
-
-                // --- 5. Success & Navigate Home ---
-                showAlert(Alert.AlertType.INFORMATION, "Booking Confirmed",
-                        "Booking Confirmed! Reference ID: " + booking.getBookingId());
+                showAlert(Alert.AlertType.INFORMATION, "Booking Confirmed", 
+                          "Payment Successful! Booking ID: " + booking.getBookingId());
                 handleBack();
 
             } else {
-                throw new RuntimeException("Booking Service returned false.");
+                // --- PAYMENT FAILED / CANCELLED ---
+                showAlert(Alert.AlertType.WARNING, "Payment Cancelled", 
+                          "Booking was not completed. You have not been charged.");
+                // Optional: You could delete the PENDING booking here to clean up
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to save booking: " + e.getMessage());
-            return; // Stop execution if DB save fails
+            showAlert(Alert.AlertType.ERROR, "Error", "System error: " + e.getMessage());
         }
-        // --------------------------------
-
-        // TODO: build Ticket object (example below) and generate PDF + send email
     }
 
     private PassengerDetails showPassengerDetailsDialog(String seatNumber) {

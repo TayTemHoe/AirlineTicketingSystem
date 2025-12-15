@@ -3,6 +3,9 @@ package com.mycompany.airlineticketingsystem.repository;
 import com.mycompany.airlineticketingsystem.config.DatabaseConnection;
 import com.mycompany.airlineticketingsystem.model.TicketEntity;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class TicketEntityRepositoryImpl implements TicketEntityRepository {
 
@@ -81,5 +84,34 @@ public class TicketEntityRepositoryImpl implements TicketEntityRepository {
         } catch (SQLException e) {
             throw new RuntimeException("Error generating new ticket ID: " + e.getMessage(), e);
         }
+    }
+    
+    @Override
+    public List<TicketEntity> findByCustomerIc(String icNo) {
+        List<TicketEntity> tickets = new ArrayList<>();
+        String sql = "SELECT * FROM ticket WHERE customer_ic_number = ? ORDER BY ticket_id DESC";
+
+        // ✅ FIX: Connection outside try block
+        try {
+            Connection conn = DatabaseConnection.getConnection();
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, icNo);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    tickets.add(new TicketEntity(
+                        rs.getString("ticket_id"),
+                        rs.getString("flight_id"),
+                        rs.getString("seat_id"),
+                        rs.getString("seat"),
+                        rs.getString("passenger_passport_number"),
+                        rs.getString("customer_ic_number")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tickets;
     }
 }

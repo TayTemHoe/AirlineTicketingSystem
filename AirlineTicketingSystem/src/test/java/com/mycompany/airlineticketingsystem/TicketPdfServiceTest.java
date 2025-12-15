@@ -1,6 +1,7 @@
-package com.mycompany.airlineticketingsystem.service;
+package com.mycompany.airlineticketingsystem;
 
 import com.mycompany.airlineticketingsystem.model.Ticket;
+import com.mycompany.airlineticketingsystem.service.TicketPdfService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;

@@ -5,6 +5,7 @@ import com.mycompany.airlineticketingsystem.model.Plane;
 import com.mycompany.airlineticketingsystem.model.Seat;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface FlightService {
     
@@ -19,5 +20,14 @@ public interface FlightService {
     
     // Admin features
     List<Flight> getAllFlights();
+    
+    List<Plane> getAllPlanes();
+    
+    
+    void updateFlight(Flight flight);
+    void deleteFlight(String flightId);
+    
+   // ...  methods ...
+   Optional<Flight> getFlightById(String flightId);
 }
 

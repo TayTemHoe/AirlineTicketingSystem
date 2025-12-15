@@ -23,6 +23,7 @@ import javafx.scene.layout.GridPane;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import javafx.concurrent.Task;
 
 public class StaffManagementController {
 
@@ -61,19 +62,28 @@ public class StaffManagementController {
 
     @FXML
     private void handleRefresh() {
-        staffList.clear();
+        // Show loading state (optional)
+        staffTable.setPlaceholder(new Label("Loading data..."));
         
-        // 1. Fetch real data from Service
-        List<Staff> dbData = authService.getAllStaff();
-        
-        // 2. Add to ObservableList (which updates the TableView)
-        staffList.addAll(dbData);
-        
-        // 3. Bind to Table
-        staffTable.setItems(staffList);
-        
-        // Optional: Show count
-        System.out.println("Loaded " + staffList.size() + " staff records.");
+        Task<List<Staff>> task = new Task<>() {
+            @Override protected List<Staff> call() {
+                return authService.getAllStaff();
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            staffList.clear();
+            staffList.addAll(task.getValue());
+            staffTable.setItems(staffList);
+            staffTable.setPlaceholder(new Label("No staff records found."));
+        });
+
+        task.setOnFailed(e -> {
+            new Alert(Alert.AlertType.ERROR, "Failed to load staff data.").show();
+            task.getException().printStackTrace();
+        });
+
+        new Thread(task).start();
     }
 
     @FXML

@@ -111,9 +111,10 @@ public class FlightManagementController {
     private void handleRefresh() {
         lblStatus.setText("Loading data...");
         
-        // Run database fetch in background thread
         Task<List<Flight>> task = new Task<>() {
             @Override protected List<Flight> call() {
+                // FORCE REFRESH from DB
+                ((FlightServiceImpl) flightService).refreshCache(); 
                 return flightService.getAllFlights();
             }
         };

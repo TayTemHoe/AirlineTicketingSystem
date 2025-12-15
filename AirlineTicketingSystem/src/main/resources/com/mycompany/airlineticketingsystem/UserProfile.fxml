@@ -7,11 +7,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 
-<VBox spacing="20.0" alignment="TOP_CENTER"
-      xmlns="http://javafx.com/javafx/21"
+<VBox fx:id="root" spacing="20.0" alignment="TOP_CENTER"
+      xmlns="http://javafx.com/javafx/21" 
       xmlns:fx="http://javafx.com/fxml/1" 
-      fx:controller="com.mycompany.airlineticketingsystem.controller.ProfileController"
-      stylesheets="@customer-style.css">
+      fx:controller="com.mycompany.airlineticketingsystem.controller.ProfileController">
 
     <padding>
         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
