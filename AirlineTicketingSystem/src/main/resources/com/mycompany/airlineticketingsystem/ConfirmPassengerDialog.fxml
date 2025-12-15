@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/28"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.mycompany.airlineticketingsystem.controller.ConfirmPassengerDialogController"
+      spacing="14"
+      styleClass="card">
+
+    <padding>
+        <Insets top="18" right="18" bottom="18" left="18"/>
+    </padding>
+
+    <Label text="Please Confirm Details" styleClass="section-title"/>
+    <Label text="Make sure everything is correct before generating the ticket."
+           style="-fx-text-fill: -color-text-light;"/>
+
+    <Separator />
+
+    <GridPane hgap="10" vgap="10">
+        <columnConstraints>
+            <ColumnConstraints minWidth="110" />
+            <ColumnConstraints hgrow="ALWAYS" />
+        </columnConstraints>
+
+        <Label text="Seat" style="-fx-font-weight:bold;" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <Label fx:id="seatValue" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Name" style="-fx-font-weight:bold;" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <Label fx:id="nameValue" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Passport" style="-fx-font-weight:bold;" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <Label fx:id="passportValue" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Recheck" styleClass="button" onAction="#handleRecheck"/>
+        <Button text="Confirm" styleClass="button, btn-success" defaultButton="true" onAction="#handleConfirm"/>
+    </HBox>
+</VBox>

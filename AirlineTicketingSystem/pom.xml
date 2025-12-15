@@ -11,6 +11,19 @@
         <exec.mainClass>com.mycompany.airlineticketingsystem.AirlineTicketingSystem</exec.mainClass>
     </properties>
     <dependencies>
+         <!-- PDF generation -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>3.0.6</version>
+        </dependency>
+        <!-- Email sending -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
