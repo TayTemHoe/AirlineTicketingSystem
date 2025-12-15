@@ -1,5 +1,6 @@
-package com.mycompany.airlineticketingsystem;
+package com.mycompany.airlineticketingsystem.service;
 
+import com.mycompany.airlineticketingsystem.service.EmailService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.nio.file.Files;

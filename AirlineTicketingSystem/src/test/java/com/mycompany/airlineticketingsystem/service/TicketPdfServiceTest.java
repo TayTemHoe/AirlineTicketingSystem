@@ -1,4 +1,4 @@
-package com.mycompany.airlineticketingsystem;
+package com.mycompany.airlineticketingsystem.service;
 
 import com.mycompany.airlineticketingsystem.model.Ticket;
 import com.mycompany.airlineticketingsystem.service.TicketPdfService;

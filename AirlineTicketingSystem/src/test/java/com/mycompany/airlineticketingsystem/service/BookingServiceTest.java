@@ -1,7 +1,9 @@
-package com.mycompany.airlineticketingsystem;
+package com.mycompany.airlineticketingsystem.service;
 
 import com.mycompany.airlineticketingsystem.model.Booking;
 import com.mycompany.airlineticketingsystem.repository.BookingRepositoryImpl;
+import com.mycompany.airlineticketingsystem.service.BookingService;
+import com.mycompany.airlineticketingsystem.service.BookingServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

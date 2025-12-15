@@ -2,14 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
  */
-package com.mycompany.airlineticketingsystem;
+package com.mycompany.airlineticketingsystem.service;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import com.mycompany.airlineticketingsystem.model.Payment;
+import com.mycompany.airlineticketingsystem.service.PaymentService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
@@ -20,45 +22,29 @@ public class PaymentServiceTest {
     public PaymentServiceTest() {
     }
 
-    @org.junit.BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @org.junit.AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    @org.junit.Before
-    public void setUp() throws Exception {
-    }
-
-    @org.junit.After
-    public void tearDown() throws Exception {
-    }
-    
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
     }
     
-    @AfterClass
+    @AfterAll
     public static void tearDownClass() {
     }
     
-    @Before
+    @BeforeEach
     public void setUp() {
     }
     
-    @After
+    @AfterEach
     public void tearDown() {
     }
 
     /**
      * Test of getPendingPaymentAmount method, of class PaymentService.
      */
-    @org.junit.Test
+    @Test
     public void testGetPendingPaymentAmount() {
         System.out.println("getPendingPaymentAmount");
-        int bookingId = 0;
+        String bookingId = "B0001";
         PaymentService instance = new PaymentService();
         double expResult = 0.0;
         double result = instance.getPendingPaymentAmount(bookingId);
@@ -70,7 +56,7 @@ public class PaymentServiceTest {
     /**
      * Test of processPayment method, of class PaymentService.
      */
-    @org.junit.Test
+    @Test
     public void testProcessPayment() {
         System.out.println("processPayment");
         Payment payment = null;
