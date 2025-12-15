@@ -21,38 +21,29 @@ import org.junit.jupiter.api.Test;
  * @author ACER
  */
 public class ReportServiceTest {
+        
+    private ReportService instance;
     
-    public ReportServiceTest() {
-    }
-    
-    @BeforeAll
-    public static void setUpClass() {
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
-    }
     
     @BeforeEach
     public void setUp() {
+        instance = new ReportService();
     }
     
-    @AfterEach
-    public void tearDown() {
-    }
-
     /**
      * Test of getRevenueByMethod method, of class ReportService.
      */
     @Test
     public void testGetRevenueByMethod() {
-        System.out.println("getRevenueByMethod");
-        ReportService instance = new ReportService();
-        Map<String, Double> expResult = null;
+        System.out.println("Testing getRevenueByMethod...");
+        
         Map<String, Double> result = instance.getRevenueByMethod();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        // Fix: Ensure result is NOT null and has data
+        assertNotNull(result, "Result map should not be null");
+        assertFalse(result.isEmpty(), "Revenue data should not be empty");
+        
+        System.out.println("Revenue Data: " + result);
     }
 
     /**
@@ -60,13 +51,16 @@ public class ReportServiceTest {
      */
     @Test
     public void testGetTopDestinations() {
-        System.out.println("getTopDestinations");
-        ReportService instance = new ReportService();
-        Map<String, Integer> expResult = null;
-        Map<String, Integer> result = instance.getTopDestinations();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("Testing getTopDestinations...");
+        
+        Map<String, Integer> result = this.instance.getTopDestinations();
+        
+        // Fix: Ensure result is NOT null
+        assertNotNull(result, "Result map should not be null");
+        // We don't check isEmpty() strictly here because fresh DB might have no flights yet,
+        // but based on your logs, you have data, so this will pass.
+        
+        System.out.println("Destinations Data: " + result);
     }
 
     /**
@@ -74,13 +68,14 @@ public class ReportServiceTest {
      */
     @Test
     public void testGetSeatClassDistribution() {
-        System.out.println("getSeatClassDistribution");
-        ReportService instance = new ReportService();
-        Map<String, Integer> expResult = null;
+        System.out.println("Testing getSeatClassDistribution...");
+
         Map<String, Integer> result = instance.getSeatClassDistribution();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        // Fix: Ensure result is NOT null
+        assertNotNull(result, "Result map should not be null");
+        
+        System.out.println("Seat Class Data: " + result);
     }
 
     /**
@@ -88,13 +83,13 @@ public class ReportServiceTest {
      */
     @Test
     public void testGetCustomerGenderDistribution() {
-        System.out.println("getCustomerGenderDistribution");
-        ReportService instance = new ReportService();
-        Map<String, Integer> expResult = null;
+        System.out.println("Testing getCustomerGenderDistribution...");
+        
         Map<String, Integer> result = instance.getCustomerGenderDistribution();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        // Fix: Ensure result is NOT null
+        assertNotNull(result, "Result map should not be null");
+        
+        System.out.println("Gender Data: " + result);
     }
-    
 }

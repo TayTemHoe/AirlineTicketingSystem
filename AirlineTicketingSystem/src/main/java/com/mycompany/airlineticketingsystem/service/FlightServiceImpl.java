@@ -108,17 +108,33 @@ public class FlightServiceImpl implements FlightService {
 
     private List<Seat> generateSeatsForPlane(String flightId, int capacity) {
         List<Seat> generatedSeats = new ArrayList<>();
-        int rows = capacity / 4; 
+        
+        // Calculate rows needed (Round UP to ensure we have enough rows for capacity)
+        int rows = (int) Math.ceil((double) capacity / 4.0); 
         char[] colLetters = {'A', 'B', 'C', 'D'};
+        
+        int seatsGenerated = 0;
+
         for (int row = 1; row <= rows; row++) {
             for (int col = 0; col < 4; col++) {
+                // Stop if we have reached the plane's max capacity
+                if (seatsGenerated >= capacity) {
+                    break;
+                }
+
+                // Logic: Row 1 is Business, Rest are Economy
                 SeatType type = (row == 1) ? SeatType.BUSINESS : SeatType.ECONOMY;
+                
                 String seatNum = row + String.valueOf(colLetters[col]);
                 String uniqueId = flightId + "-" + seatNum;
+
                 Seat seat = new Seat(uniqueId, seatNum, type, SeatStatus.AVAILABLE, flightId);
                 generatedSeats.add(seat);
+                seatsGenerated++;
             }
         }
+        
+        System.out.println("🔹 Generated " + generatedSeats.size() + " seats for Flight " + flightId);
         return generatedSeats;
     }
 }
