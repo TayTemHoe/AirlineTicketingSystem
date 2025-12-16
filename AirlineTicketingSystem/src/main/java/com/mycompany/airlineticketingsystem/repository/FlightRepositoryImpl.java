@@ -16,16 +16,14 @@ public class FlightRepositoryImpl implements FlightRepository {
         List<Flight> flights = new ArrayList<>();
         String sql = "SELECT * FROM flight ORDER BY depart_time";
 
-        // ✅ FIX: Get connection OUTSIDE the try-with-resources block
-        try {
-            Connection conn = DatabaseConnection.getConnection(); 
-            // Only 'stmt' and 'rs' are auto-closed. 'conn' stays open.
-            try (Statement stmt = conn.createStatement();
-                 ResultSet rs = stmt.executeQuery(sql)) {
+        //  Get connection OUTSIDE the try-with-resources block
+       // ✅ FIX: Connection inside try-with-resources
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
-                while (rs.next()) {
-                    flights.add(mapResultSetToFlight(rs));
-                }
+            while (rs.next()) {
+                flights.add(mapResultSetToFlight(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -37,11 +35,11 @@ public class FlightRepositoryImpl implements FlightRepository {
     @Override
     public Optional<Flight> findById(String flightId) {
         String sql = "SELECT * FROM flight WHERE flight_id = ?";
-        try {
-            Connection conn = DatabaseConnection.getConnection();
-            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setString(1, flightId);
-                ResultSet rs = stmt.executeQuery();
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, flightId);
+            try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) return Optional.of(mapResultSetToFlight(rs));
             }
         } catch (SQLException e) { e.printStackTrace(); }
@@ -62,19 +60,20 @@ public class FlightRepositoryImpl implements FlightRepository {
                      "price_business = EXCLUDED.price_business, " +
                      "plane_id = EXCLUDED.plane_id";
 
-        try {
-            Connection conn = DatabaseConnection.getConnection();
-            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setString(1, flight.getFlightId());
-                stmt.setString(2, flight.getDepartCountry());
-                stmt.setString(3, flight.getArriveCountry());
-                stmt.setTimestamp(4, Timestamp.valueOf(flight.getDepartTime()));
-                stmt.setTimestamp(5, Timestamp.valueOf(flight.getArriveTime()));
-                stmt.setBigDecimal(6, flight.getPriceEconomy());
-                stmt.setBigDecimal(7, flight.getPriceBusiness());
-                stmt.setString(8, flight.getPlaneId());
-                stmt.executeUpdate();
-            }
+        // ✅ FIX
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, flight.getFlightId());
+            stmt.setString(2, flight.getDepartCountry());
+            stmt.setString(3, flight.getArriveCountry());
+            stmt.setTimestamp(4, Timestamp.valueOf(flight.getDepartTime()));
+            stmt.setTimestamp(5, Timestamp.valueOf(flight.getArriveTime()));
+            stmt.setBigDecimal(6, flight.getPriceEconomy());
+            stmt.setBigDecimal(7, flight.getPriceBusiness());
+            stmt.setString(8, flight.getPlaneId());
+            stmt.executeUpdate();
+            
         } catch (SQLException e) { e.printStackTrace(); }
     }
 
@@ -90,8 +89,7 @@ public class FlightRepositoryImpl implements FlightRepository {
         } catch (SQLException e) { e.printStackTrace(); }
     }
 
-    // ... Keep mapResultSetToFlight and other methods ...
-    private Flight mapResultSetToFlight(ResultSet rs) throws SQLException {
+   private Flight mapResultSetToFlight(ResultSet rs) throws SQLException {
         return new Flight.Builder()
                 .id(rs.getString("flight_id"))
                 .route(rs.getString("depart_country"), rs.getString("arrive_country"))
@@ -107,13 +105,13 @@ public class FlightRepositoryImpl implements FlightRepository {
     public List<Flight> searchFlights(String from, String to, LocalDate date) {
         List<Flight> flights = new ArrayList<>();
         String sql = "SELECT * FROM flight WHERE depart_country = ? AND arrive_country = ? AND DATE(depart_time) = ?";
-        try {
-            Connection conn = DatabaseConnection.getConnection();
-            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setString(1, from);
-                stmt.setString(2, to);
-                stmt.setDate(3, java.sql.Date.valueOf(date));
-                ResultSet rs = stmt.executeQuery();
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, from);
+            stmt.setString(2, to);
+            stmt.setDate(3, java.sql.Date.valueOf(date));
+            try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) flights.add(mapResultSetToFlight(rs));
             }
         } catch (SQLException e) { e.printStackTrace(); }
@@ -124,11 +122,12 @@ public class FlightRepositoryImpl implements FlightRepository {
     public List<Plane> findAllPlane() {
         List<Plane> planes = new ArrayList<>();
         String sql = "SELECT * FROM plane";
-        try {
-            Connection conn = DatabaseConnection.getConnection();
-            try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
-                while (rs.next()) planes.add(new Plane(rs.getString("plane_id"), rs.getString("model"), rs.getInt("capacity")));
-            }
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement(); 
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
+            while (rs.next()) planes.add(new Plane(rs.getString("plane_id"), rs.getString("model"), rs.getInt("capacity")));
+            
         } catch (SQLException e) { e.printStackTrace(); }
         return planes;
     }

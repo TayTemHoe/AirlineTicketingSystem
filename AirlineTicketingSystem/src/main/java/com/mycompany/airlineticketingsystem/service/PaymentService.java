@@ -29,18 +29,23 @@ public class PaymentService {
     // 2. PAY BILL
    public boolean processPayment(Payment payment) {
         String insertSql = "INSERT INTO payments (booking_id, total_amount, card_last_four, payment_method, status, payment_date) VALUES (?, ?, ?, ?, ?, ?)";
-        
-        // UPDATED: Table name 'booking' (singular) based on BookingRepositoryImpl
         String updateSql = "UPDATE booking SET status = 'CONFIRMED' WHERE booking_id = ?";
 
+        // The Connection is opened in the try-with-resources block.
+        // It will be automatically closed (returned to pool) when the block ends.
         try (Connection conn = DatabaseConnection.getConnection()) {
+            
             conn.setAutoCommit(false); // Transaction Start
 
             // A. Insert Payment
             try (PreparedStatement pstmt = conn.prepareStatement(insertSql)) {
-                pstmt.setString(1, payment.getBookingID()); // String ID
+                pstmt.setString(1, payment.getBookingID()); 
                 pstmt.setDouble(2, payment.getAmount());
-                pstmt.setString(3, payment.getCardNo()); 
+                String fullCard = payment.getCardNo();
+                String lastFour = (fullCard != null && fullCard.length() >= 4) 
+                                ? fullCard.substring(fullCard.length() - 4) 
+                                : "0000"; // Fallback
+                pstmt.setString(3, lastFour); 
                 pstmt.setString(4, payment.getPaymentMethod());
                 pstmt.setString(5, "COMPLETED");
                 pstmt.setTimestamp(6, Timestamp.valueOf(payment.getPaymentDate()));
@@ -49,12 +54,13 @@ public class PaymentService {
 
             // B. Update Booking Status
             try (PreparedStatement pstmt = conn.prepareStatement(updateSql)) {
-                pstmt.setString(1, payment.getBookingID()); // String ID
+                pstmt.setString(1, payment.getBookingID()); 
                 pstmt.executeUpdate();
             }
 
             conn.commit(); // Transaction End
             return true;
+            
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

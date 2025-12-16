@@ -10,7 +10,10 @@ public class Payment {
     private String paymentMethod;
     private LocalDateTime paymentDate;
     private String status;
-
+    
+    public Payment(){
+    }
+    
     //Construstor
     public Payment(String bookingID, double amount, String cardNo, String paymentMethod) {
         this.bookingID = bookingID;

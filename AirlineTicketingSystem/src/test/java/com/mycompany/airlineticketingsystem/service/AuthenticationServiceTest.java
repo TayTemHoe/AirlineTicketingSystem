@@ -18,10 +18,10 @@ public class AuthenticationServiceTest {
         AuthenticationService auth = new AuthenticationService();
         
         // 1. Test STAFF (Assumes S001/112233 exists in DB)
-        Optional<Staff> result1 = auth.loginStaff("S001", "112233");
+        Optional<Staff> result1 = auth.loginStaff("S001", "Tb@123");
         
         // 2. Test CUSTOMER (Assumes this user exists in DB)
-        Optional<Customer> result2 = auth.loginCustomer("910101-10-1111", "112233"); 
+        Optional<Customer> result2 = auth.loginCustomer("910101-10-1111", "Tb@123"); 
         
         assertTrue(result1.isPresent(), "Staff login should succeed");
         assertTrue(result2.isPresent(), "Customer login should succeed");

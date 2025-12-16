@@ -5,7 +5,6 @@ import com.mycompany.airlineticketingsystem.model.TicketEntity;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class TicketEntityRepositoryImpl implements TicketEntityRepository {
 
@@ -92,9 +91,8 @@ public class TicketEntityRepositoryImpl implements TicketEntityRepository {
         String sql = "SELECT * FROM ticket WHERE customer_ic_number = ? ORDER BY ticket_id DESC";
 
         // ✅ FIX: Connection outside try block
-        try {
-            Connection conn = DatabaseConnection.getConnection();
-            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, icNo);
                 ResultSet rs = stmt.executeQuery();
 
@@ -108,7 +106,7 @@ public class TicketEntityRepositoryImpl implements TicketEntityRepository {
                         rs.getString("customer_ic_number")
                     ));
                 }
-            }
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }

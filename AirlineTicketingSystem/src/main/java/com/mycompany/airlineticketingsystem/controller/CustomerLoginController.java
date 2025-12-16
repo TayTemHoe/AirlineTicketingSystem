@@ -20,7 +20,7 @@ public class CustomerLoginController {
     
     private AuthenticationService authService = new AuthenticationService();
 
-@FXML
+    @FXML
     private void handleLogin() throws IOException {
         String ic = icField.getText().trim();
         String pass = passwordField.getText();

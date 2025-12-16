@@ -1,60 +1,67 @@
 package com.mycompany.airlineticketingsystem.config;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-
-/**
- * Utility class for getting database connections using Singleton pattern.
- * Database credentials are configured here.
- * 
- * Update the URL, USERNAME, and PASSWORD constants below with your Supabase credentials.
- * You can get these from NetBeans: Services > Databases > Your Connection > Properties
- * 
- * @author Modernized Architecture
- */
 
 public class DatabaseConnection {
 
-    // 1. Singleton Instance (Holds the one and only connection)
-    private static DatabaseConnection instance;
-    private Connection connection;
+    // 1. The DataSource (The Pool itself)
+    private static final HikariDataSource dataSource;
 
-    // 2. Database Credentials
-    // Use the same details you put in the NetBeans Services tab
-    private static final String URL = "jdbc:postgresql://aws-1-ap-northeast-1.pooler.supabase.com:6543/postgres"; 
-    // IMPORTANT: Add ?sslmode=require if you get SSL errors
-    // private static final String URL = "jdbc:postgresql://aws-1-ap-northeast-1.pooler.supabase.com:6543/postgres?sslmode=require";
-    
-    private static final String USERNAME = "postgres.ajdaciskaffuvaanizlw"; 
-    private static final String PASSWORD = "ATS!y3s2G5MNT"; 
+    // 2. Database Credentials (KEEP YOUR PASSWORD SECRET!)
+    // keep ?prepareThreshold=0 to be safe, but Hikari often handles this better.
+    private static final String URL = "jdbc:postgresql://aws-1-ap-northeast-1.pooler.supabase.com:6543/postgres?prepareThreshold=0"; 
+    private static final String USER = "postgres.ajdaciskaffuvaanizlw"; 
+    private static final String PASSWORD = "ATS!y3s2G5MNT"; // ⚠️ Replace if changed
 
-    // 3. Private Constructor (Prevents anyone else from saying "new DatabaseConnection()")
-    private DatabaseConnection() throws SQLException {
+    // 3. Static Initializer (Runs once when app starts)
+    static {
         try {
-            // Load the Driver (Optional in newer Java, but good for safety)
-            Class.forName("org.postgresql.Driver");
+            // Create Configuration
+            HikariConfig config = new HikariConfig();
+            config.setJdbcUrl(URL);
+            config.setUsername(USER);
+            config.setPassword(PASSWORD);
+            config.setDriverClassName("org.postgresql.Driver");
+
+            // --- PERFORMANCE SETTINGS (The "Magic" Part) ---
             
-            // Connect
-            this.connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            System.out.println("✅ Database Connected Successfully!");
+            // Maximum number of connections in the pool
+            // 10 is usually enough for a desktop app. Supabase free tier has limits (usually 60-100 total).
+            config.setMaximumPoolSize(10); 
             
-        } catch (ClassNotFoundException e) {
-            throw new SQLException("PostgreSQL JDBC Driver not found. Make sure it's in your classpath.", e);
-        } catch (SQLException e) {
-            System.err.println("❌ Connection Failed: " + e.getMessage());
-            throw new SQLException("Failed to connect to database. Check your credentials and network connection.", e);
+            // Minimum idle connections to keep ready
+            config.setMinimumIdle(2);
+            
+            // How long a connection can sit idle before being closed (10 minutes)
+            config.setIdleTimeout(600000); 
+            
+            // Max lifetime of a connection in the pool (30 minutes)
+            config.setMaxLifetime(1800000); 
+
+            // Initialize the Pool
+            dataSource = new HikariDataSource(config);
+            System.out.println("✅ HikariCP Connection Pool Initialized!");
+
+        } catch (Exception e) {
+            System.err.println("❌ Failed to initialize HikariCP Pool!");
+            throw new RuntimeException(e);
         }
     }
 
-    // 4. Public Access Point (The only way to get the connection)
+    // 4. Public Access Point
+    // Now, instead of giving a "Static Connection", we give a "Leased Connection"
     public static Connection getConnection() throws SQLException {
-        if (instance == null) {
-            instance = new DatabaseConnection();
-        } else if (instance.connection == null || instance.connection.isClosed()) {
-            // Reconnect if connection is null or closed
-            instance = new DatabaseConnection();
+        return dataSource.getConnection();
+    }
+    
+    // Optional: Call this when shutting down the app to close all connections
+    public static void shutdown() {
+        if (dataSource != null) {
+            dataSource.close();
+            System.out.println("🛑 Database Pool Closed.");
         }
-        return instance.connection;
     }
 }

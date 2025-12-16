@@ -12,7 +12,6 @@ public class ReportService {
         Map<String, Double> data = new HashMap<>();
         String sql = "SELECT payment_method, SUM(total_amount) as total FROM payments GROUP BY payment_method";
 
-        // ✅ FIX
         try {
             Connection conn = DatabaseConnection.getConnection();
             try (Statement stmt = conn.createStatement();
@@ -26,7 +25,7 @@ public class ReportService {
     }
 
     // 2. OPERATIONAL REPORT (Top Destinations)
-    // ✅ UPDATED: 'bookings' -> 'booking'
+    // 'bookings' -> 'booking'
     public Map<String, Integer> getTopDestinations() {
         Map<String, Integer> data = new HashMap<>();
         String sql = "SELECT f.arrive_country, COUNT(b.booking_id) as total_bookings " +
@@ -48,7 +47,7 @@ public class ReportService {
     }
    
     // 3. SEAT CLASS DISTRIBUTION
-    // ✅ UPDATED: 'bookings' -> 'booking'
+    // UPDATED: 'bookings' -> 'booking'
     public Map<String, Integer> getSeatClassDistribution() {
         Map<String, Integer> data = new HashMap<>();
         String sql = "SELECT s.type, COUNT(b.booking_id) as total " +
@@ -64,7 +63,7 @@ public class ReportService {
     }
 
     // 4. CUSTOMER DEMOGRAPHICS
-    // ✅ CRITICAL FIX: Join Booking -> Ticket -> Customer to get Gender
+    // Join Booking -> Ticket -> Customer to get Gender
     // Because booking.ic_no is now Passport Number (Passenger), not Customer IC.
     public Map<String, Integer> getCustomerGenderDistribution() {
         Map<String, Integer> data = new HashMap<>();

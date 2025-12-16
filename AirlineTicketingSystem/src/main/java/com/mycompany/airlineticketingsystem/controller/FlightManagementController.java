@@ -12,7 +12,6 @@ import com.mycompany.airlineticketingsystem.enums.SeatStatus;
 import com.mycompany.airlineticketingsystem.model.Flight;
 import com.mycompany.airlineticketingsystem.model.Plane;
 import com.mycompany.airlineticketingsystem.model.Seat;
-import com.mycompany.airlineticketingsystem.service.FlightService;
 import com.mycompany.airlineticketingsystem.service.FlightServiceImpl;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
